@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Kurir & Admin - Logi Express</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
+    
+    <style>
+        :root {
+            --accent-blue: #0066ff;
+            --accent-blue-soft: #eff6ff;
+            --bg-soft: #f4f6f9;
+            --text-dark: #111417;
+            --text-gray: #7d8590;
+            --border-color: #edf0f5;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-soft);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+        }
+
+        .admin-wrapper { width: 100%; max-width: 600px; }
+
+        .header-admin {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            background: white;
+            padding: 16px 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+        .header-admin h1 { font-size: 20px; font-weight: 700; margin: 0; }
+        
+        .btn-header-group { display: flex; gap: 8px; }
+        .refresh-btn { background: white; border: 1px solid var(--border-color); padding: 10px; border-radius: 12px; cursor: pointer; display: flex; color: var(--text-dark); }
+
+        .list-container { display: flex; flex-direction: column; gap: 16px; }
+        
+        .order-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.01);
+            border: 1px solid var(--border-color);
+        }
+        
+        .card-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 12px;
+        }
+        .order-id {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            background: var(--accent-blue-soft);
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+        
+        /* Pewarnaan Status Badge */
+        .badge-status {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .status-diproses { background: #eff6ff; color: #0066ff; }
+        .status-pending { background: #fffde7; color: #f57f17; }
+        .status-selesai { background: #e8f5e9; color: #1b5e20; }
+        
+        .customer-name { font-size: 18px; font-weight: 700; margin: 0 0 12px 0; }
+        .info-grid { display: flex; flex-direction: column; gap: 8px; }
+        .info-row { display: flex; gap: 10px; font-size: 13.5px; color: var(--text-gray); align-items: flex-start; }
+        .info-row .material-icons-round { font-size: 18px; color: var(--accent-blue); }
+        
+        /* Style List Belanjaan Berurutan */
+        .items-box {
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 12px;
+            margin-top: 14px;
+            font-size: 13.5px;
+            border: 1px solid var(--border-color);
+        }
+        .items-list {
+            margin: 6px 0 0 0;
+            padding-left: 20px;
+            line-height: 1.6;
+        }
+        .items-list li {
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 16px; }
+        .btn-action {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-maps { background: #ff5500; color: white; }
+        .btn-wa { background: #16a34a; color: white; }
+
+        /* Style Baru Dropdown Pilihan Status di Tempat */
+        .status-control-box {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .status-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-gray);
+        }
+        .select-status-dropdown {
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid #e0e4ec;
+            font-family: inherit;
+            font-size: 12.5px;
+            font-weight: 600;
+            background-color: #ffffff;
+            color: var(--text-dark);
+            cursor: pointer;
+            outline: none;
+            min-width: 130px;
+        }
+        .select-status-dropdown:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .login-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #111417;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .login-box {
+            background: white;
+            width: 100%;
+            max-width: 360px;
+            padding: 30px 24px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .login-box h2 { font-size: 20px; font-weight: 700; margin: 0; }
+        .login-box p { font-size: 13px; color: var(--text-gray); margin: 6px 0 20px 0; }
+        .input-pass { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #e0e4ec; font-size: 14px; box-sizing: border-box; text-align: center; margin-bottom: 16px; }
+        .btn-login { width: 100%; background: var(--accent-blue); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="login-overlay" id="layer-login">
+        <div class="login-box">
+            <span class="material-icons-round" style="font-size: 48px; color: var(--accent-blue); margin-bottom: 12px;">lock</span>
+            <h2>Akses Terbatas Admin</h2>
+            <p>Masukkan PIN atau Sandi Toko Anda</p>
+            <input type="password" id="pass-admin" class="input-pass" placeholder="Masukkan PIN" onkeypress="cekEnter(event)">
+            <button class="btn-login" onclick="validasiLoginAdmin()">MASUK DASHBOARD</button>
+        </div>
+    </div>
+
+    <div class="admin-wrapper">
+        <div class="header-admin">
+            <div>
+                <h1>Daftar Antrean Kurir</h1>
+                <p style="margin:4px 0 0 0; font-size:12px; color:var(--text-gray);">Logi Express Real-Time Pemantauan</p>
+            </div>
+            <div class="btn-header-group">
+                <button class="refresh-btn" onclick="muatPesananMasuk()">
+                    <span class="material-icons-round">refresh</span>
+                </button>
+                <button class="refresh-btn" onclick="logoutAdmin()" style="color: #ef4444;">
+                    <span class="material-icons-round">logout</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="list-container" id="konten-admin">
+            <p style="text-align: center; color: var(--text-gray); font-size: 13px;">Mengambil data dari Google Sheet...</p>
+        </div>
+    </div>
+
+    <script>
+        const PASSWORD_RAHASIA = "pp"; 
+        const URL_API_PESANAN = "https://api.sheety.co/40cfa77545cbdaeca2bb92c1a4be880f/databasePesananToko/sheet1";
+
+        function periksaStatusLogin() {
+            const statusLogin = sessionStorage.getItem("admin_logged_in");
+            if (statusLogin === "true") {
+                document.getElementById("layer-login").style.display = "none";
+                muatPesananMasuk();
+            }
+        }
+
+        function validasiLoginAdmin() {
+            const inputSandi = document.getElementById("pass-admin").value;
+            if (inputSandi === PASSWORD_RAHASIA) {
+                sessionStorage.setItem("admin_logged_in", "true");
+                document.getElementById("layer-login").style.display = "none";
+                muatPesananMasuk();
+            } else {
+                alert("⛔ PIN admin salah.");
+                document.getElementById("pass-admin").value = "";
+            }
+        }
+
+        function cekEnter(e) { if (e.key === "Enter") { validasiLoginAdmin(); } }
+        function logoutAdmin() { sessionStorage.removeItem("admin_logged_in"); window.location.reload(); }
+
+        async function muatPesananMasuk() {
+            const wadah = document.getElementById('konten-admin');
+            wadah.innerHTML = '<p style="text-align: center; color: var(--text-gray); font-size: 13px;">Menyegarkan antrean...</p>';
+            
+            try {
+                const respon = await fetch(URL_API_PESANAN);
+                const data = await respon.json();
+                const daftarAntrean = data.sheet1 || data.sheet1s; 
+                
+                wadah.innerHTML = "";
+                if (!daftarAntrean || daftarAntrean.length === 0) {
+                    wadah.innerHTML = '<p style="text-align: center; color: var(--text-gray);">Belum ada antrean masuk.</p>';
+                    return;
+                }
+
+                daftarAntrean.reverse().forEach(p => {
+                    const formatTotal = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p.total);
+                    
+                    const koordinatMurni = p.koordinat ? p.koordinat.toString() : "";
+                    let linkMapsKurir = "#";
+                    
+                    if (koordinatMurni) {
+                        const parts = koordinatMurni.split(',');
+                        const lon = parts[0] ? parts[0].trim() : "0";
+                        const lat = parts[1] ? parts[1].trim() : "0";
+                        linkMapsKurir = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+                    }
+
+                    const idFinal = p.idPesanan || "LOGI-EXPRESS";
+                    
+                    // Deteksi kelas warna berdasarkan status teks awal
+                    let statusTeks = p.status ? p.status.trim() : "Diproses";
+                    let kelasStatus = "status-diproses";
+                    if (statusTeks.toLowerCase() === "pending") kelasStatus = "status-pending";
+                    if (statusTeks.toLowerCase() === "selesai") kelasStatus = "status-selesai";
+
+                    // ==========================================================
+                    // ⚡ PARSING DAFTAR BELANJA AGAR BERURUTAN (TIDAK BINGUNG) ⚡
+                    // ==========================================================
+                    let listBelanjaanHTML = "";
+                    if (p.pesanan) {
+                        // Memisahkan string pesanan berdasarkan koma (,)
+                        const itemArray = p.pesanan.split(',');
+                        itemArray.forEach(item => {
+                            if (item.trim() !== "") {
+                                listBelanjaanHTML += `<li>${item.trim()}</li>`;
+                            }
+                        });
+                    } else {
+                        listBelanjaanHTML = "<li>Tidak ada rincian barang</li>";
+                    }
+                    // ==========================================================
+
+                    wadah.innerHTML += `
+                        <div class="order-card" id="kartu-${p.id}">
+                            <div class="card-top-bar">
+                                <span class="order-id">${idFinal}</span>
+                                <span class="badge-status ${kelasStatus}" id="badge-teks-${p.id}">${statusTeks}</span>
+                            </div>
+
+                            <h3 class="customer-name">${p.nama || "Tanpa Nama"}</h3>
+                            
+                            <div class="info-grid">
+                                <div class="info-row">
+                                    <span class="material-icons-round">schedule</span>
+                                    <span><b>Waktu:</b> ${p.waktu || "-"}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="material-icons-round">room</span>
+                                    <span><b>Alamat:</b> ${p.alamat || "-"}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="material-icons-round">local_shipping</span>
+                                    <span><b>Jarak Rute:</b> ${p.jarak || 0} Km (Ongkir: Rp ${p.ongkir ? p.ongkir.toLocaleString('id-ID') : 0})</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="material-icons-round">payments</span>
+                                    <span style="font-weight:700; color:var(--text-dark);">Total COD: ${formatTotal}</span>
+                                </div>
+                            </div>
+
+                            <div class="items-box">
+                                📦 <b>Daftar Belanjaan Berurutan:</b>
+                                <ol class="items-list">
+                                    ${listBelanjaanHTML}
+                                </ol>
+                            </div>
+
+                            <div class="btn-group">
+                                <a href="${linkMapsKurir}" target="_blank" class="btn-action btn-maps">
+                                    <span class="material-icons-round">navigation</span> MAPS
+                                </a>
+                                <a href="https://wa.me/62${p.whatsapp ? p.whatsapp.toString().replace(/^0/, '') : ''}" target="_blank" class="btn-action btn-wa">
+                                    <span class="material-icons-round">chat</span> HUBUNGI
+                                </a>
+                            </div>
+
+                            <div class="status-control-box">
+                                <span class="status-label">UBAH STATUS ANTRIAN:</span>
+                                <select class="select-status-dropdown" onchange="perbaruiStatusKeServer(${p.id}, this.value)">
+                                    <option value="Diproses" ${statusTeks === 'Diproses' ? 'selected' : ''}>Diproses</option>
+                                    <option value="Pending" ${statusTeks === 'Pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="Selesai" ${statusTeks === 'Selesai' ? 'selected' : ''}>Selesai</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.error(err);
+                wadah.innerHTML = '<p style="text-align: center; color: #ef4444;">Gagal mengambil data antrean.</p>';
+            }
+        }
+
+        // FUNGSI UTAMA: Update status instan ke database Google Sheet via Sheety PUT API
+        async function perbaruiStatusKeServer(barisId, statusBaru) {
+            if (!barisId) return;
+
+            // Efek visual langsung (Optimistic UI) agar perubahan warna badge terasa instan di layar
+            const lencana = document.getElementById(`badge-teks-${barisId}`);
+            if (lencana) {
+                lencana.innerText = statusBaru;
+                lencana.className = "badge-status " + (statusBaru === 'Diproses' ? 'status-diproses' : statusBaru === 'Pending' ? 'status-pending' : 'status-selesai');
+            }
+
+            const urlPut = `${URL_API_PESANAN}/${barisId}`;
+            const payloadData = {
+                sheet1: {
+                    status: statusBaru
+                }
+            };
+
+            try {
+                const respon = await fetch(urlPut, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payloadData)
+                });
+
+                if (!respon.ok) {
+                    alert("⚠️ Gagal menyimpan status baru ke Google Sheet. Menyegarkan kembali...");
+                    muatPesananMasuk();
+                }
+            } catch (error) {
+                console.error(error);
+                alert("⚠️ Masalah jaringan. Gagal merubah status di server.");
+                muatPesananMasuk();
+            }
+        }
+
+        window.onload = periksaStatusLogin;
+    </script>
+</body>
+</html>

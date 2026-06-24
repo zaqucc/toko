@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesanan Berhasil - Logi Express</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
+    
+    <style>
+        :root {
+            --accent-orange: #ff5500;
+            --bg-soft: #f4f6f9;
+            --text-dark: #111417;
+            --text-gray: #7d8590;
+            --color-success: #16a34a;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-soft);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .success-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 480px;
+            border-radius: 24px;
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid #edf0f5;
+        }
+
+        .icon-circle {
+            width: 72px;
+            height: 72px;
+            background: #e8f5e9;
+            color: var(--color-success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px auto;
+        }
+        .icon-circle .material-icons-round { font-size: 40px; }
+
+        h1 { font-size: 22px; font-weight: 700; margin: 0 0 8px 0; }
+        .sub-invoice { font-size: 13px; color: var(--text-gray); margin: 0 0 24px 0; }
+        .invoice-num { font-weight: 700; color: var(--accent-orange); background: #fff5f0; padding: 4px 8px; border-radius: 6px; }
+
+        .summary-box {
+            text-align: left;
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid #edf0f5;
+            margin-bottom: 24px;
+        }
+        .summary-title { font-size: 13px; font-weight: 700; color: var(--text-gray); margin-bottom: 12px; display: block; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .item-row { display: flex; justify-content: space-between; font-size: 13.5px; margin-bottom: 8px; color: #334155; }
+        .item-row.total-row { border-top: 1px dashed #e2e8f0; margin-top: 12px; padding-top: 12px; font-weight: 700; font-size: 14.5px; color: var(--text-dark); }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #eff6ff;
+            color: #0066ff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12.5px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        .btn-home {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            background: var(--text-dark);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .btn-home:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+    <div class="success-card">
+        <div class="icon-circle">
+            <span class="material-icons-round">check_circle</span>
+        </div>
+        <h1>Pesanan Berhasil Dibuat!</h1>
+        <p class="sub-invoice">ID Invoice Anda: <span class="invoice-num" id="text-invoice">LOGI-XXXX</span></p>
+
+        <div class="badge-status">
+            <span class="material-icons-round" style="font-size: 16px;">sync</span>
+            <span id="text-status">Status: Diproses (Kurir Bersiap)</span>
+        </div>
+
+        <div class="summary-box">
+            <span class="summary-title">Rincian Riwayat Akhir</span>
+            <div id="wadah-rincian">
+                <p style="text-align: center; color: var(--text-gray); font-size: 13px; margin: 0;">Memuat rincian...</p>
+            </div>
+        </div>
+
+        <a href="index.html" class="btn-home">
+            <span class="material-icons-round">shopping_bag</span> KEMBALI BERBELANJA
+        </a>
+    </div>
+
+    <script>
+        // Ambil data ID pesanan yang ditaruh di URL oleh order.html
+        const urlParams = new URLSearchParams(window.location.search);
+        const idInvoice = urlParams.get('id');
+
+        // URL API Sheety Anda
+        const URL_API_PESANAN = "https://api.sheety.co/40cfa77545cbdaeca2bb92c1a4be880f/databasePesananToko/sheet1";
+
+        async function muatDetailRiwayat() {
+            if (!idInvoice) {
+                document.getElementById('wadah-rincian').innerHTML = "<p style='color:red; text-align:center;'>ID Pesanan Tidak Ditemukan.</p>";
+                return;
+            }
+
+            document.getElementById('text-invoice').innerText = idInvoice;
+
+            try {
+                // Ambil data dari Google Sheet untuk memverifikasi pesanan ini secara real-time
+                const respon = await fetch(URL_API_PESANAN);
+                const data = await respon.json();
+                const daftar = data.sheet1 || data.sheet1s;
+
+                // Cari baris yang idPesanan-nya cocok dengan ID di URL
+                const dataPesanan = daftar.find(p => p.idPesanan === idInvoice);
+
+                if (dataPesanan) {
+                    // Update teks status dinamis sesuai pantauan admin
+                    document.getElementById('text-status').innerText = `Status: ${dataPesanan.status || 'Diproses'}`;
+
+                    const formatSub = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dataPesanan.subtotal);
+                    const formatOngkir = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dataPesanan.ongkir);
+                    const formatTotal = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(dataPesanan.total);
+
+                    let htmlRincian = `
+                        <div class="item-row"><span>Penerima:</span> <b>${dataPesanan.nama}</b></div>
+                        <div class="item-row"><span>Jarak Kurir:</span> <span>${dataPesanan.jarak} Km</span></div>
+                        <div class="item-row"><span>Subtotal Barang:</span> <span>${formatSub}</span></div>
+                        <div class="item-row"><span>Ongkos Kirim:</span> <span>${formatOngkir}</span></div>
+                        <div class="item-row total-row"><span>Total Bayar (COD):</span> <span style="color:var(--accent-orange);">${formatTotal}</span></div>
+                    `;
+                    document.getElementById('wadah-rincian').innerHTML = htmlRincian;
+                } else {
+                    document.getElementById('wadah-rincian').innerHTML = "<p style='text-align:center; color:var(--text-gray);'>Pesanan Anda sedang didaftarkan ke server...</p>";
+                }
+            } catch (err) {
+                document.getElementById('wadah-rincian').innerHTML = "<p style='text-align:center; color:var(--text-gray);'>Gagal memuat detail dari server cloud.</p>";
+            }
+        }
+
+        window.onload = muatDetailRiwayat;
+    </script>
+</body>
+</html>

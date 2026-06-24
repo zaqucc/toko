@@ -1,0 +1,22 @@
+{
+  "name": "Logi Express Toko Online",
+  "short_name": "Logi Express",
+  "description": "Aplikasi Belanja Online Instan Logi Express",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f4f6f9",
+  "theme_color": "#ff5500",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2331/2331966.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2331/2331966.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

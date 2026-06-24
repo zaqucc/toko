@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toserba Digital Tegalwaru & Pangkalan</title>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
+    
+    <style>
+        :root {
+            --accent-orange: #ff5500;
+            --accent-gradient: linear-gradient(135deg, #ff6b00, #ff3d00);
+            --bg-soft: #f4f6f9;
+            --text-dark: #111417;
+            --text-gray: #7d8590;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-soft);
+            margin: 0;
+            padding-bottom: 100px;
+            color: var(--text-dark);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Header Mewah Minimalis */
+        .app-header {
+            background: #ffffff;
+            padding: 24px 20px 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #edf0f5;
+        }
+        .welcome-text h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .welcome-text p {
+            margin: 4px 0 0 0;
+            font-size: 12px;
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .location-icon {
+            color: var(--accent-orange);
+            font-size: 14px !important;
+        }
+
+        /* Kategori Geser Tanpa Border */
+        .category-scroll {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 16px 20px;
+            gap: 8px;
+            background: #ffffff;
+        }
+        .category-scroll::-webkit-scrollbar { display: none; }
+        
+        .category-tab {
+            background-color: #f0f2f5;
+            color: var(--text-dark);
+            padding: 10px 18px;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.25s ease;
+        }
+        .category-tab.active {
+            background: var(--text-dark);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        /* Area Katalog & Grid Eksklusif */
+        .container { padding: 20px; }
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        /* Kartu Produk Tanpa Border (Clean Look) */
+        .premium-card {
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .img-container {
+            width: 100%;
+            height: 160px;
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            background-color: #eef1f6;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.03);
+        }
+        .premium-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Tag Stok Dinamis */
+        .tag-stok {
+            position: absolute;
+            bottom: 12px; left: 12px;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            backdrop-filter: blur(4px);
+        }
+        .stok-ready {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-dark);
+        }
+        .stok-habis {
+            background: rgba(239, 68, 68, 0.9);
+            color: #ffffff;
+        }
+        
+        /* Efek Buram untuk Produk Habis */
+        .habis-blur {
+            opacity: 0.6;
+        }
+        
+        /* Detail Informasi Produk */
+        .info-container {
+            padding: 12px 4px 4px 4px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .item-name {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0 0 6px 0;
+            line-height: 1.4;
+            height: 38px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .item-price {
+            font-size: 15px;
+            color: var(--text-dark);
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        /* Tombol Tambah Bulat Minimalis */
+        .btn-round-add {
+            position: absolute;
+            right: 4px; bottom: 4px;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(255, 85, 0, 0.25);
+            transition: transform 0.2s;
+        }
+        .btn-round-add:active { transform: scale(0.9); }
+        .btn-round-add.disabled-btn {
+            background: #d1d5db;
+            color: #9ca3af;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* Bottom Nav Premium Floating Minimalis */
+        .dock-nav {
+            position: fixed;
+            bottom: 24px; left: 24px; right: 24px;
+            height: 64px;
+            background: rgba(17, 20, 23, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        .dock-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #9ea4b0;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .dock-link.active { color: #ffffff; font-weight: 700; }
+        .dock-link .material-icons-round { font-size: 22px; margin-bottom: 2px; }
+    </style>
+</head>
+<body>
+
+    <div class="app-header">
+        <div class="welcome-text">
+            <h1>Selamat Datang</h1>
+            <p><span class="material-icons-round location-icon">location_on</span> Tegalwaru & Pangkalan</p>
+        </div>
+        <span class="material-icons-round" style="color: var(--text-dark); font-size: 26px;">search</span>
+    </div>
+
+    <div class="category-scroll">
+        <button class="category-tab active" onclick="filterKategori('Semua', event)">Semua</button>
+        <button class="category-tab" onclick="filterKategori('Sembako', event)">Sembako</button>
+        <button class="category-tab" onclick="filterKategori('Frozen Food', event)">Frozen Food</button>
+        <button class="category-tab" onclick="filterKategori('Kuliner Lokal', event)">Kuliner Lokal</button>
+        <button class="category-tab" onclick="filterKategori('Home Care', event)">Home Care</button>
+        <button class="category-tab" onclick="filterKategori('Gadget', event)">Gadget</button>
+        <button class="category-tab" onclick="filterKategori('Fashion', event)">Fashion</button>
+    </div>
+
+    <div class="container">
+        <div class="grid-layout" id="konten-produk">
+            <p style="text-align: center; grid-column: span 2; color: var(--text-gray); font-size: 13px;">Memuat produk...</p>
+        </div>
+    </div>
+
+    <nav class="dock-nav">
+        <a href="#" class="dock-link active">
+            <span class="material-icons-round">local_mall</span>
+            Belanja
+        </a>
+        <a href="order.html" class="dock-link">
+            <span class="material-icons-round">shopping_bag</span>
+            Keranjang
+        </a>
+        <a href="#" class="dock-link">
+            <span class="material-icons-round">chat_bubble_outline</span>
+            Bantuan
+        </a>
+    </nav>
+
+    <script>
+        const URL_API_SHEETY = "https://api.sheety.co/40cfa77545cbdaeca2bb92c1a4be880f/databaseToko/databaseProdukTokoOnline"; 
+        let semuaProduk = [];
+
+        async function ambilDataProduk() {
+            try {
+                const respon = await fetch(URL_API_SHEETY);
+                const data = await respon.json();
+                semuaProduk = data.databaseProdukTokoOnline; 
+                tampilkanProduk(semuaProduk);
+            } catch (error) {
+                console.error("Gagal memuat data:", error);
+                document.getElementById('konten-produk').innerHTML = `
+                    <p style="text-align: center; grid-column: span 2; color: #ff3d00; font-size: 13px;">
+                        Gagal memuat data produk. Pastikan internet aktif.
+                    </p>`;
+            }
+        }
+
+        function tampilkanProduk(daftarProduk) {
+            const gridProduk = document.getElementById('konten-produk');
+            gridProduk.innerHTML = ""; 
+
+            if (daftarProduk.length === 0) {
+                gridProduk.innerHTML = `<p style="text-align: center; grid-column: span 2; color: var(--text-gray);">Produk tidak ditemukan.</p>`;
+                return;
+            }
+
+            daftarProduk.forEach(produk => {
+                const hargaFormat = new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(produk.harga);
+
+                // Cek kondisi stok produk (Proteksi Stok Kosong)
+                const isHabis = (produk.stok === undefined || produk.stok === null || Number(produk.stok) <= 0);
+                const teksStok = isHabis ? "Habis" : `Stok: ${produk.stok}`;
+                const kelasStok = isHabis ? "stok-habis" : "stok-ready";
+                const kelasBlur = isHabis ? "habis-blur" : "";
+                const kelasTombol = isHabis ? "btn-round-add disabled-btn" : "btn-round-add";
+                const ikonTombol = isHabis ? "block" : "add";
+
+                const kartuHtml = `
+                    <div class="premium-card ${kelasBlur}">
+                        <div class="img-container">
+                            <span class="tag-stok ${kelasStok}">${teksStok}</span>
+                            <img src="${produk.foto}" class="premium-img" alt="${produk.nama}">
+                        </div>
+                        <div class="info-container">
+                            <h3 class="item-name">${produk.nama}</h3>
+                            <p class="item-price">${hargaFormat}</p>
+                            <button class="${kelasTombol}" onclick="tambahKeKeranjang(${produk.id})">
+                                <span class="material-icons-round" style="font-size: 20px;">${ikonTombol}</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                gridProduk.innerHTML += kartuHtml;
+            });
+        }
+
+        function filterKategori(namaKategori, e) {
+            let tabs = document.querySelectorAll('.category-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            e.currentTarget.classList.add('active');
+            
+            if (namaKategori === 'Semua') {
+                tampilkanProduk(semuaProduk);
+            } else {
+                const hasilFilter = semuaProduk.filter(p => p.kategori.toLowerCase() === namaKategori.toLowerCase());
+                tampilkanProduk(hasilFilter);
+            }
+        }
+
+        // AKSI NYATA MENYIMPAN BARANG KE MEMORI HP & CEK OVERSTOK
+        function tambahKeKeranjang(id) {
+            const produkDipilih = semuaProduk.find(p => p.id === id);
+            
+            if (produkDipilih) {
+                // Cek stok awal
+                if (produkDipilih.stok === undefined || produkDipilih.stok === null || Number(produkDipilih.stok) <= 0) {
+                    alert(`⚠️ Maaf, stok untuk "${produkDipilih.nama}" sudah habis.`);
+                    return;
+                }
+
+                let keranjang = JSON.parse(localStorage.getItem('keranjang')) || [];
+                const indexExist = keranjang.findIndex(item => item.id === id);
+                
+                if (indexExist !== -1) {
+                    // Cek batas sisa stok jika barang ditambah berkali-kali
+                    if (keranjang[indexExist].jumlah >= Number(produkDipilih.stok)) {
+                        alert(`⚠️ Jumlah pembelian tidak boleh melebihi batas stok tersedia (${produkDipilih.stok} pcs).`);
+                        return;
+                    }
+                    keranjang[indexExist].jumlah += 1;
+                } else {
+                    keranjang.push({
+                        id: produkDipilih.id,
+                        nama: produkDipilih.nama,
+                        harga: produkDipilih.harga,
+                        foto: produkDipilih.foto,
+                        jumlah: 1
+                    });
+                }
+                
+                localStorage.setItem('keranjang', JSON.stringify(keranjang));
+                alert(`🛒 ${produkDipilih.nama} dimasukkan ke keranjang!`);
+            }
+        }
+
+        window.onload = ambilDataProduk;
+    </script>
+</body>
+</html>
