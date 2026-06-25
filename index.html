@@ -4,46 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toserba Digital Tegalwaru & Pangkalan</title>
-    
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff4500">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Logi Express">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
     
     <style>
         :root {
-            --accent-orange: #ff5500;
-            --accent-gradient: linear-gradient(135deg, #ff6b00, #ff3d00);
-            --bg-soft: #f4f6f9;
-            --text-dark: #111417;
-            --text-gray: #7d8590;
+            --accent-orange: #ff4500;
+            --accent-gradient: linear-gradient(135deg, #ff6b00 0%, #ff2200 100%);
+            --bg-soft: #f8fafc;
+            --text-dark: #0f172a;
+            --text-gray: #64748b;
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+            --hover-shadow: 0 20px 25px -5px rgba(255, 69, 0, 0.08), 0 10px 10px -6px rgba(255, 69, 0, 0.04);
         }
         
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg-soft);
             margin: 0;
-            padding-bottom: 100px;
+            padding-bottom: 110px;
             color: var(--text-dark);
             -webkit-tap-highlight-color: transparent;
+            letter-spacing: -0.2px;
         }
 
-        /* Header Mewah Minimalis */
+        /* HEADER PREMIUM */
         .app-header {
             background: #ffffff;
-            padding: 24px 20px 16px 20px;
+            padding: 24px 20px 20px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #edf0f5;
+            border-bottom: 1px solid #f1f5f9;
         }
-        .welcome-text h1 {
+        .brand-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .brand-logo-box {
+            background: var(--accent-gradient);
+            color: #ffffff;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(255, 69, 0, 0.25);
+        }
+        .brand-logo-box .material-icons-round {
+            font-size: 24px;
+        }
+        .brand-text h1 {
             margin: 0;
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: -0.6px;
+            color: var(--text-dark);
         }
-        .welcome-text p {
-            margin: 4px 0 0 0;
-            font-size: 12px;
+        .brand-text p {
+            margin: 3px 0 0 0;
+            font-size: 11.5px;
+            font-weight: 600;
             color: var(--text-gray);
             display: flex;
             align-items: center;
@@ -53,101 +82,210 @@
             color: var(--accent-orange);
             font-size: 14px !important;
         }
+        .search-trigger-btn {
+            background: #f1f5f9;
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .search-trigger-btn:active { transform: scale(0.9); background: #e2e8f0; }
 
-        /* Kategori Geser Tanpa Border */
+        /* BANNER KETERANGAN APLIKASI MODERN */
+        .about-app-banner {
+            background: #ffffff;
+            padding: 0 20px 20px 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .about-card {
+            background: linear-gradient(135deg, #fff4ed 0%, #fff0e6 100%);
+            border: 1px solid rgba(255, 107, 0, 0.1);
+            border-radius: 24px;
+            padding: 18px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            position: relative;
+            overflow: hidden;
+        }
+        .about-card::before {
+            content: '';
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            background: rgba(255, 69, 0, 0.05);
+            border-radius: 50%;
+            top: -50px;
+            right: -45px;
+        }
+        .about-icon-box {
+            background: #ffffff;
+            color: var(--accent-orange);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.08);
+        }
+        .about-details {
+            flex: 1;
+            z-index: 1;
+        }
+        .about-details h2 {
+            margin: 0 0 4px 0;
+            font-size: 15px;
+            font-weight: 800;
+            color: #c23400;
+            letter-spacing: -0.2px;
+        }
+        .about-details p {
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.6;
+            font-weight: 500;
+            color: #475569;
+        }
+        .about-badges {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .badge-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #d93800;
+            background: #ffffff;
+            padding: 6px 12px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border: 1px solid rgba(255, 107, 0, 0.05);
+        }
+        .badge-item .material-icons-round {
+            font-size: 14px !important;
+        }
+
+        /* KATEGORI SCROLL ULTRA SLEEK */
         .category-scroll {
             display: flex;
             overflow-x: auto;
             white-space: nowrap;
             padding: 16px 20px;
-            gap: 8px;
+            gap: 10px;
             background: #ffffff;
+            border-bottom: 1px solid #f1f5f9;
         }
         .category-scroll::-webkit-scrollbar { display: none; }
         
         .category-tab {
-            background-color: #f0f2f5;
-            color: var(--text-dark);
-            padding: 10px 18px;
-            border-radius: 14px;
+            background-color: #f8fafc;
+            color: #475569;
+            padding: 11px 20px;
+            border-radius: 16px;
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            border: none;
-            transition: all 0.25s ease;
+            border: 1px solid #f1f5f9;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .category-tab.active {
             background: var(--text-dark);
             color: #ffffff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            border-color: var(--text-dark);
+            box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.2);
+            transform: translateY(-1px);
         }
 
-        /* Area Katalog & Grid Eksklusif */
+        /* KATALOG GRID */
         .container { padding: 20px; }
         .grid-layout {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 16px;
         }
         
-        /* Kartu Produk Tanpa Border (Clean Look) */
+        /* KARTU PRODUK PREMIUM (GLASS EFFECT) */
         .premium-card {
-            background: transparent;
+            background: #ffffff;
+            border-radius: 24px;
+            border: 1px solid #f1f5f9;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             position: relative;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .img-container {
-            width: 100%;
-            height: 160px;
-            border-radius: 24px;
-            overflow: hidden;
-            position: relative;
-            background-color: #eef1f6;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.03);
-        }
-        .premium-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .premium-card:active {
+            transform: scale(0.98);
         }
         
-        /* Tag Stok Dinamis */
+        .img-container {
+            width: 100%;
+            padding-top: 100%; /* Sempurna Kotak 1:1 */
+            position: relative;
+            background-color: #f8fafc;
+            overflow: hidden;
+        }
+        .premium-img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .premium-card:hover .premium-img {
+            transform: scale(1.05);
+        }
+        
+        /* Tag Stok Bergaya Baru */
         .tag-stok {
             position: absolute;
-            bottom: 12px; left: 12px;
-            padding: 4px 8px;
-            border-radius: 8px;
+            top: 12px; left: 12px;
+            padding: 5px 10px;
+            border-radius: 10px;
             font-size: 10px;
             font-weight: 700;
-            backdrop-filter: blur(4px);
+            letter-spacing: 0.3px;
+            z-index: 2;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         .stok-ready {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             color: var(--text-dark);
+            backdrop-filter: blur(8px);
         }
         .stok-habis {
-            background: rgba(239, 68, 68, 0.9);
+            background: #ef4444;
             color: #ffffff;
         }
         
-        /* Efek Buram untuk Produk Habis */
-        .habis-blur {
-            opacity: 0.6;
-        }
+        .habis-blur { opacity: 0.65; }
         
         /* Detail Informasi Produk */
         .info-container {
-            padding: 12px 4px 4px 4px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
             position: relative;
+            background: #ffffff;
         }
         .item-name {
             font-size: 13.5px;
             font-weight: 600;
             color: var(--text-dark);
-            margin: 0 0 6px 0;
+            margin: 0 0 12px 0;
             line-height: 1.4;
             height: 38px;
             display: -webkit-box;
@@ -155,19 +293,33 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+        
+        /* Baris Harga & Tombol */
+        .price-action-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+            margin-top: auto;
+            width: 100%;
+        }
         .item-price {
-            font-size: 15px;
+            font-size: 14.5px;
             color: var(--text-dark);
-            font-weight: 700;
+            font-weight: 800;
             margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            letter-spacing: -0.3px;
         }
         
-        /* Tombol Tambah Bulat Minimalis */
+        /* Tombol Tambah Lebih Modern */
         .btn-round-add {
-            position: absolute;
-            right: 4px; bottom: 4px;
-            width: 36px; height: 36px;
-            border-radius: 50%;
+            width: 38px; height: 38px;
+            flex-shrink: 0;
+            border-radius: 12px;
             background: var(--accent-gradient);
             color: white;
             border: none;
@@ -175,54 +327,90 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(255, 85, 0, 0.25);
-            transition: transform 0.2s;
+            box-shadow: 0 6px 14px rgba(255, 69, 0, 0.2);
+            transition: all 0.2s;
         }
         .btn-round-add:active { transform: scale(0.9); }
         .btn-round-add.disabled-btn {
-            background: #d1d5db;
-            color: #9ca3af;
+            background: #e2e8f0;
+            color: #94a3b8;
             box-shadow: none;
             cursor: not-allowed;
         }
 
-        /* Bottom Nav Premium Floating Minimalis */
+        /* FLOATING DOCK NAV BARU */
         .dock-nav {
             position: fixed;
-            bottom: 24px; left: 24px; right: 24px;
-            height: 64px;
-            background: rgba(17, 20, 23, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            bottom: 20px; left: 20px; right: 20px;
+            height: 68px;
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
             z-index: 1000;
+            border: 1px solid rgba(255,255,255,0.08);
         }
         .dock-link {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #9ea4b0;
+            color: #94a3b8;
             text-decoration: none;
-            font-size: 10px;
-            font-weight: 500;
+            font-size: 11px;
+            font-weight: 600;
             transition: all 0.2s;
+            gap: 4px;
         }
-        .dock-link.active { color: #ffffff; font-weight: 700; }
-        .dock-link .material-icons-round { font-size: 22px; margin-bottom: 2px; }
+        .dock-link.active { color: #ffffff; }
+        .dock-link .material-icons-round { 
+            font-size: 24px; 
+            transition: transform 0.2s;
+        }
+        .dock-link.active .material-icons-round {
+            transform: translateY(-2px);
+            color: #ff6b00;
+        }
     </style>
 </head>
 <body>
 
     <div class="app-header">
-        <div class="welcome-text">
-            <h1>Selamat Datang</h1>
-            <p><span class="material-icons-round location-icon">location_on</span> Tegalwaru & Pangkalan</p>
+        <div class="brand-wrapper">
+            <div class="brand-logo-box">
+                <span class="material-icons-round">local_mall</span>
+            </div>
+            <div class="brand-text">
+                <h1>Logi Express</h1>
+                <p><span class="material-icons-round location-icon">location_on</span> Tegalwaru & Pangkalan</p>
+            </div>
         </div>
-        <span class="material-icons-round" style="color: var(--text-dark); font-size: 26px;">search</span>
+        <button class="search-trigger-btn">
+            <span class="material-icons-round" style="font-size: 24px;">search</span>
+        </button>
+    </div>
+
+    <div class="about-app-banner">
+        <div class="about-card">
+            <div class="about-icon-box">
+                <span class="material-icons-round">storefront</span>
+            </div>
+            <div class="about-details">
+                <h2>Logi Express</h2>
+                <p>Belanja sembako, jajanan lokal, frozen food hingga kebutuhan harian jadi lebih mudah, cepat, dan diantar langsung ke depan pintu rumah Anda.</p>
+                <div class="about-badges">
+                    <div class="badge-item">
+                        <span class="material-icons-round" style="color: #ff6b00;">bolt</span> Kilat
+                    </div>
+                    <div class="badge-item">
+                        <span class="material-icons-round" style="color: #22c55e;">verified</span> Terpercaya
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="category-scroll">
@@ -269,7 +457,7 @@
             } catch (error) {
                 console.error("Gagal memuat data:", error);
                 document.getElementById('konten-produk').innerHTML = `
-                    <p style="text-align: center; grid-column: span 2; color: #ff3d00; font-size: 13px;">
+                    <p style="text-align: center; grid-column: span 2; color: #ff3d00; font-size: 13px; font-weight:600;">
                         Gagal memuat data produk. Pastikan internet aktif.
                     </p>`;
             }
@@ -291,7 +479,6 @@
                     minimumFractionDigits: 0
                 }).format(produk.harga);
 
-                // Cek kondisi stok produk (Proteksi Stok Kosong)
                 const isHabis = (produk.stok === undefined || produk.stok === null || Number(produk.stok) <= 0);
                 const teksStok = isHabis ? "Habis" : `Stok: ${produk.stok}`;
                 const kelasStok = isHabis ? "stok-habis" : "stok-ready";
@@ -307,10 +494,12 @@
                         </div>
                         <div class="info-container">
                             <h3 class="item-name">${produk.nama}</h3>
-                            <p class="item-price">${hargaFormat}</p>
-                            <button class="${kelasTombol}" onclick="tambahKeKeranjang(${produk.id})">
-                                <span class="material-icons-round" style="font-size: 20px;">${ikonTombol}</span>
-                            </button>
+                            <div class="price-action-row">
+                                <p class="item-price">${hargaFormat}</p>
+                                <button class="${kelasTombol}" onclick="tambahKeKeranjang(${produk.id})">
+                                    <span class="material-icons-round" style="font-size: 20px;">${ikonTombol}</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -332,12 +521,10 @@
             }
         }
 
-        // AKSI NYATA MENYIMPAN BARANG KE MEMORI HP & CEK OVERSTOK
         function tambahKeKeranjang(id) {
             const produkDipilih = semuaProduk.find(p => p.id === id);
             
             if (produkDipilih) {
-                // Cek stok awal
                 if (produkDipilih.stok === undefined || produkDipilih.stok === null || Number(produkDipilih.stok) <= 0) {
                     alert(`⚠️ Maaf, stok untuk "${produkDipilih.nama}" sudah habis.`);
                     return;
@@ -347,7 +534,6 @@
                 const indexExist = keranjang.findIndex(item => item.id === id);
                 
                 if (indexExist !== -1) {
-                    // Cek batas sisa stok jika barang ditambah berkali-kali
                     if (keranjang[indexExist].jumlah >= Number(produkDipilih.stok)) {
                         alert(`⚠️ Jumlah pembelian tidak boleh melebihi batas stok tersedia (${produkDipilih.stok} pcs).`);
                         return;
@@ -371,4 +557,13 @@
         window.onload = ambilDataProduk;
     </script>
 </body>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('Service Worker Terdaftar!', reg))
+        .catch(err => console.log('Service Worker Gagal Didaftar', err));
+    });
+  }
+</script>
 </html>
