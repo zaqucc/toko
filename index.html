@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logi Express — Belanja Kebutuhan Harian</title>
+    <meta name="description" content="Belanja sembako, jajanan lokal, frozen food, dan kebutuhan harian di Logi Express.">
+    <meta name="theme-color" content="#f4511e">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
+</head>
+<body>
+
+    <!-- HEADER UTAMA -->
+    <div class="app-header">
+        <div class="brand-wrapper">
+            <div class="brand-logo-box">
+                <span class="material-icons-round">local_mall</span>
+            </div>
+            <div class="brand-text">
+                <h1>Logi Express</h1>
+                <p><span class="material-icons-round location-icon">location_on</span> Tegalwaru & Pangkalan</p>
+            </div>
+        </div>
+        <!-- TOMBOL PENCARIAN DI ATAS -->
+        <button class="search-trigger-btn" onclick="toggleSearchModal()">
+            <span class="material-icons-round" style="font-size: 24px;">search</span>
+        </button>
+    </div>
+
+    <!-- POP-UP MODAL PENCARIAN RESPONSIF -->
+    <div class="search-modal" id="search-modal">
+        <div class="search-box-container">
+            <span class="material-icons-round" style="color: var(--text-gray);">search</span>
+            <input type="text" id="search-input" placeholder="Cari nama produk..." oninput="handleSearch(this.value)">
+            <button onclick="toggleSearchModal()">
+                <span class="material-icons-round">close</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- BANNER KETERANGAN APLIKASI -->
+    <div class="about-app-banner">
+        <div class="about-card">
+            <div class="about-icon-box">
+                <span class="material-icons-round">storefront</span>
+            </div>
+            <div class="about-details">
+                <h2>Logi Express</h2>
+                <p>Belanja sembako, jajanan lokal, frozen food hingga kebutuhan harian jadi lebih mudah, cepat, dan diantar langsung ke depan pintu rumah Anda.</p>
+                <div class="about-badges">
+                    <div class="badge-item">
+                        <span class="material-icons-round" style="color: #ff6b00;">bolt</span> Kilat
+                    </div>
+                    <div class="badge-item">
+                        <span class="material-icons-round" style="color: #22c55e;">verified</span> Terpercaya
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATEGORI SCROLL -->
+    <div class="category-scroll" id="kategori-container">
+        <button class="category-tab active" onclick="filterKategori('Semua', event)">Semua</button>
+    </div>
+
+    <div class="container">
+        <div class="grid-layout" id="konten-produk">
+            <p style="text-align: center; grid-column: span 2; color: var(--text-gray); font-size: 13px;">Memuat produk...</p>
+        </div>
+    </div>
+
+    <nav class="dock-nav">
+        <a href="index.html" class="dock-link active">
+            <span class="material-icons-round">local_mall</span>
+            Belanja
+        </a>
+        <a href="order.html" class="dock-link">
+            <span class="material-icons-round">shopping_bag</span>
+            Keranjang
+        </a>
+        <button type="button" class="dock-link dock-help-button" onclick="bukaPusatBantuan()" aria-haspopup="dialog" aria-controls="help-center-overlay">
+            <span class="material-icons-round">support_agent</span>
+            Bantuan
+        </button>
+    </nav>
+
+    <!-- POPUP PUSAT BANTUAN -->
+    <div class="help-center-overlay" id="help-center-overlay" aria-hidden="true" onclick="klikLuarPusatBantuan(event)">
+        <section class="help-center-modal" role="dialog" aria-modal="true" aria-labelledby="help-center-title">
+            <button class="help-close" type="button" onclick="tutupPusatBantuan()" aria-label="Tutup pusat bantuan"><span class="material-icons-round">close</span></button>
+            <div class="help-heading-icon"><span class="material-icons-round">support_agent</span></div>
+            <p class="help-eyebrow">LOGI EXPRESS</p>
+            <h2 id="help-center-title">Pusat Bantuan</h2>
+            <p class="help-intro" id="help-center-intro">Ada yang bisa kami bantu? Pilih bantuan yang kamu butuhkan.</p>
+            <div class="help-options" id="help-center-options">
+                <button class="help-option" type="button" onclick="bantuanWhatsApp('admin')">
+                    <span class="help-option-icon help-green"><span class="material-icons-round">chat</span></span>
+                    <span class="help-option-copy"><strong>Hubungi Admin</strong><small>Tanya produk, stok, atau informasi toko.</small></span>
+                    <span class="material-icons-round help-chevron">chevron_right</span>
+                </button>
+                <button class="help-option" type="button" onclick="bantuanWhatsApp('pesanan')">
+                    <span class="help-option-icon help-orange"><span class="material-icons-round">inventory_2</span></span>
+                    <span class="help-option-copy"><strong>Bantuan Pesanan</strong><small>Laporkan kendala terkait pesanan.</small></span>
+                    <span class="material-icons-round help-chevron">chevron_right</span>
+                </button>
+                <button class="help-option" type="button" onclick="tampilkanPanduanBelanja()">
+                    <span class="help-option-icon help-blue"><span class="material-icons-round">menu_book</span></span>
+                    <span class="help-option-copy"><strong>Panduan Belanja</strong><small>Pelajari cara memilih produk dan checkout.</small></span>
+                    <span class="material-icons-round help-chevron">chevron_right</span>
+                </button>
+            </div>
+            <div class="help-guide" id="help-center-guide" hidden>
+                <ol>
+                    <li><strong>Pilih produk</strong><span>Ketuk produk untuk melihat detail, atau tekan tombol tambah untuk memasukkannya ke keranjang.</span></li>
+                    <li><strong>Periksa keranjang</strong><span>Buka menu Keranjang untuk mengubah jumlah barang dan memeriksa total belanja.</span></li>
+                    <li><strong>Isi data pengiriman</strong><span>Masukkan nama, alamat lengkap beserta patokan rumah, dan nomor WhatsApp aktif.</span></li>
+                    <li><strong>Konfirmasi lewat WhatsApp</strong><span>Tekan tombol pesan, periksa ringkasan pesanan, lalu lanjutkan ke WhatsApp untuk mengirim pesanan ke admin.</span></li>
+                </ol>
+                <button class="help-back-button" type="button" onclick="kembaliKePilihanBantuan()"><span class="material-icons-round">arrow_back</span> Kembali ke pilihan bantuan</button>
+            </div>
+            <p class="help-footnote"><span class="material-icons-round">schedule</span> Admin akan membalas sesegera mungkin.</p>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        window.onload = ambilDataProduk;
+    </script>
+</body>
+</html>

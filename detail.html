@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Produk — Logi Express</title>
+    <meta name="theme-color" content="#f4511e">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
+</head>
+<body style="padding-bottom: 130px; background-color: #f8fafc;">
+
+    <!-- HEADER KEMBALI OVERLAY / TRANSPARAN -->
+    <div class="detail-top-nav">
+        <button class="btn-back-floating" onclick="window.location.href='index.html'">
+            <span class="material-icons-round">arrow_back</span>
+        </button>
+        <span class="detail-nav-title">Detail Produk</span>
+        <div style="width: 40px;"></div>
+    </div>
+
+    <!-- KONTEN DETAIL PRODUK -->
+    <div id="detail-container">
+        <div style="text-align:center; padding: 80px 20px; color: var(--text-gray);">
+            <span class="material-icons-round" style="font-size: 36px; animation: spin 1s linear infinite; color: var(--accent-orange);">refresh</span>
+            <p style="font-size: 13px; font-weight: 600; margin-top: 10px;">Memuat detail produk...</p>
+        </div>
+    </div>
+
+    <!-- TOMBOL AKSI BAWAH PREMIUM (FLOATING BAR) -->
+    <div class="detail-action-bar" id="action-beli-container">
+        <!-- Dirender dinamis oleh script.js -->
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        window.onload = ambilDetailProduk;
+    </script>
+</body>
+</html>

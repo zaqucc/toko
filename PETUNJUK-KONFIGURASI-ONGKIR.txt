@@ -1,0 +1,21 @@
+LOGI EXPRESS — ONGKIR OTOMATIS DARI GPS (OSRM + OPENSTREETMAP)
+
+Pengaturan saat ini:
+- Koordinat toko: -6.5187284, 107.2301741 (pastikan titik toko benar sebelum dipakai).
+- Tarif: Rp2.000 per km rute berkendara.
+- Ongkir minimum: Rp5.000.
+- Tidak ada batas jarak maksimum yang ditetapkan dan tidak ada gratis ongkir.
+- Tidak memerlukan Google Maps API key.
+
+Alur pelanggan:
+1. Pelanggan mengisi nama dan alamat/patokan rumah untuk membantu kurir.
+2. Pelanggan menekan satu tombol “Gunakan lokasi saya & hitung ongkir”.
+3. Browser meminta izin GPS. Setelah diizinkan, posisi HP saat itu otomatis menjadi titik tujuan.
+4. Website menghitung jarak rute berkendara dari toko ke koordinat GPS tersebut melalui OSRM. Peta tidak ditampilkan dan pelanggan tidak perlu memasang pin.
+5. Ongkir dan total otomatis diperbarui. Pelanggan kemudian menekan tombol pesan WhatsApp untuk mengirim pesanan.
+
+Penting:
+- GPS hanya dapat dibaca jika pelanggan mengizinkan izin lokasi. Website harus dibuka melalui HTTPS.
+- Pelanggan harus berada di lokasi pengiriman saat menghitung ongkir. GPS bisa kurang akurat di dalam ruangan. Alamat teks tetap perlu diisi sebagai petunjuk kurir.
+- OSRM demo publik cocok untuk pengujian/pemakaian ringan, tidak menjamin SLA untuk operasional komersial.
+- Pastikan nomor WhatsApp toko dan koordinat toko di script.js benar sebelum publikasi.

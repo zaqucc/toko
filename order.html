@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keranjang Belanja — Logi Express</title>
+    <meta name="theme-color" content="#f4511e">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
+</head>
+<body style="padding-bottom: 120px;">
+
+    <!-- HEADER KEMBALI -->
+    <div class="app-header-back">
+        <button class="btn-back" onclick="window.location.href='index.html'">
+            <span class="material-icons-round">arrow_back</span>
+        </button>
+        <h1>Keranjang Belanja</h1>
+    </div>
+
+    <!-- CONTAINER UTAMA -->
+    <div class="container">
+        <!-- DAFTAR ITEM KERANJANG -->
+        <div class="cart-list" id="daftar-keranjang">
+            <p style="text-align:center; color:var(--text-gray); padding:20px;">Memuat keranjang...</p>
+        </div>
+
+        <!-- FORM DATA PENGIRIMAN -->
+        <div class="form-card">
+            <h2>Data Pengiriman</h2>
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="nama" class="form-control" placeholder="Masukkan nama penerima">
+            </div>
+
+            <div class="form-group">
+                <label>Alamat Lengkap & Patokan Rumah</label>
+                <textarea id="alamat" class="form-control" rows="3" placeholder="Contoh: Kp. Jati, RT 04/02, Desa Cintalaksana"></textarea>
+            </div>
+
+            <div class="shipping-card" aria-live="polite">
+                <div class="shipping-card-heading">
+                    <span class="material-icons-round">local_shipping</span>
+                    <div><strong>Ongkir otomatis</strong><small>Dihitung otomatis dari posisi GPS HP kamu ke toko.</small></div>
+                </div>
+                <p id="ongkir-status" class="shipping-status">Tekan tombol di bawah. Izinkan akses lokasi agar sistem mengambil posisi HP kamu dan menghitung ongkir otomatis.</p>
+                <button type="button" id="pilih-lokasi-btn" class="btn-calculate-shipping" onclick="ambilLokasiDanHitungOngkir()">
+                    <span class="material-icons-round">my_location</span> Gunakan lokasi saya
+                </button>
+                <div class="shipping-distance-row"><span>Jarak pengiriman</span><strong id="jarak-pengiriman">Belum dihitung</strong></div>
+                <p class="map-disclaimer">Lokasi GPS digunakan sebagai tujuan pengiriman. Pastikan kamu berada di lokasi yang benar saat menghitung ongkir. Alamat dan patokan rumah tetap perlu diisi untuk membantu kurir.</p>
+            </div>
+
+            <div class="order-price-breakdown">
+                <div><span>Subtotal produk</span><strong id="subtotal-produk">Rp 0</strong></div>
+                <div><span>Ongkir</span><strong id="ongkir-akhir">Belum dihitung</strong></div>
+                <div class="order-grand-total"><span>Total pembayaran</span><strong class="total-price" id="total-akhir">Rp 0</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOMBOL AKSI PESAN WHATSAPP DI BAWAH -->
+    <div class="action-bar">
+        <button class="btn-submit-order" onclick="kirimKeWhatsApp()">
+            <span class="material-icons-round">chat</span>
+            <span>PESAN SEKARANG VIA WHATSAPP</span>
+        </button>
+    </div>
+
+    <!-- POPUP KONFIRMASI PESAN VIA WHATSAPP -->
+    <div class="wa-confirm-overlay" id="wa-confirm-overlay" aria-hidden="true" onclick="klikLuarPopupPesan(event)">
+        <section class="wa-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="wa-modal-title">
+            <button class="wa-modal-close" type="button" onclick="tutupPopupPesan()" aria-label="Tutup popup"><span class="material-icons-round">close</span></button>
+            <div class="wa-modal-icon"><span class="material-icons-round" id="wa-modal-icon">chat</span></div>
+            <p class="wa-modal-eyebrow" id="wa-modal-eyebrow">KONFIRMASI PESANAN</p>
+            <h2 id="wa-modal-title">Lanjut pesan via WhatsApp?</h2>
+            <p class="wa-modal-desc" id="wa-modal-desc">Pastikan detail pesanan dan data penerima sudah benar.</p>
+            <div class="wa-order-summary" id="wa-order-summary">
+                <div class="wa-summary-row"><span>Penerima</span><strong id="wa-summary-name">—</strong></div>
+                <div class="wa-summary-row"><span>Jumlah produk</span><strong id="wa-summary-count">—</strong></div>
+                <div class="wa-summary-row"><span>Subtotal produk</span><strong id="wa-summary-subtotal">Rp 0</strong></div>
+                <div class="wa-summary-row"><span>Jarak pengiriman</span><strong id="wa-summary-distance">—</strong></div>
+                <div class="wa-summary-row"><span>Ongkir</span><strong id="wa-summary-shipping">—</strong></div>
+                <div class="wa-summary-total"><span>Total pembayaran</span><strong id="wa-summary-total">Rp 0</strong></div>
+            </div>
+            <div class="wa-modal-actions" id="wa-modal-actions">
+                <button class="wa-btn-secondary" type="button" onclick="tutupPopupPesan()">Periksa lagi</button>
+                <button class="wa-btn-primary" type="button" onclick="lanjutKeWhatsApp()"><span class="material-icons-round">send</span> Lanjut ke WhatsApp</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            renderKeranjang();
+            const alamatInput = document.getElementById('alamat');
+            if (alamatInput) {
+                alamatInput.addEventListener('input', alamatPengirimanBerubah);
+            }
+        });
+    </script>
+</body>
+</html>
