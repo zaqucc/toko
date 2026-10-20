@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logi Express — Belanja Kebutuhan Harian</title>
-    <meta name="description" content="Belanja sembako, jajanan lokal, frozen food, dan kebutuhan harian di Logi Express.">
+    <title>Loji Express — Belanja Kebutuhan Harian</title>
+    <meta name="description" content="Belanja sembako, jajanan lokal, frozen food, dan kebutuhan harian di Loji Express.">
     <meta name="theme-color" content="#f4511e">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round">
@@ -16,10 +19,10 @@
     <div class="app-header">
         <div class="brand-wrapper">
             <div class="brand-logo-box">
-                <span class="material-icons-round">local_mall</span>
+                <img src="icon.svg" alt="Logo Loji Express" class="brand-app-logo">
             </div>
             <div class="brand-text">
-                <h1>Logi Express</h1>
+                <h1>Loji Express</h1>
                 <p><span class="material-icons-round location-icon">location_on</span> Tegalwaru & Pangkalan</p>
             </div>
         </div>
@@ -47,9 +50,9 @@
                 <span class="material-icons-round">storefront</span>
             </div>
             <div class="about-details">
-                <h2>Logi Express</h2>
+                <h2>Loji Express</h2>
                 <p>Belanja sembako, jajanan lokal, frozen food hingga kebutuhan harian jadi lebih mudah, cepat, dan diantar langsung ke depan pintu rumah Anda.</p>
-                <div class="about-badges">
+                <div class="about-badges" id="about-badges">
                     <div class="badge-item">
                         <span class="material-icons-round" style="color: #ff6b00;">bolt</span> Kilat
                     </div>
@@ -92,7 +95,7 @@
         <section class="help-center-modal" role="dialog" aria-modal="true" aria-labelledby="help-center-title">
             <button class="help-close" type="button" onclick="tutupPusatBantuan()" aria-label="Tutup pusat bantuan"><span class="material-icons-round">close</span></button>
             <div class="help-heading-icon"><span class="material-icons-round">support_agent</span></div>
-            <p class="help-eyebrow">LOGI EXPRESS</p>
+            <p class="help-eyebrow">Loji Express</p>
             <h2 id="help-center-title">Pusat Bantuan</h2>
             <p class="help-intro" id="help-center-intro">Ada yang bisa kami bantu? Pilih bantuan yang kamu butuhkan.</p>
             <div class="help-options" id="help-center-options">

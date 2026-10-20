@@ -19,3 +19,13 @@ Penting:
 - Pelanggan harus berada di lokasi pengiriman saat menghitung ongkir. GPS bisa kurang akurat di dalam ruangan. Alamat teks tetap perlu diisi sebagai petunjuk kurir.
 - OSRM demo publik cocok untuk pengujian/pemakaian ringan, tidak menjamin SLA untuk operasional komersial.
 - Pastikan nomor WhatsApp toko dan koordinat toko di script.js benar sebelum publikasi.
+
+
+FITUR PWA / OFFLINE
+- Situs memiliki manifest.webmanifest, service-worker.js, dan ikon aplikasi.
+- Setelah dibuka online melalui HTTPS, halaman utama, detail, keranjang, CSS, dan JavaScript akan tersimpan di perangkat.
+- Katalog produk terakhir yang berhasil dimuat disimpan di perangkat dan bisa ditampilkan ketika internet terputus. Harga/stok offline mungkin sudah tidak terbaru.
+- GPS, penghitungan rute OSRM, pembaruan produk dari Google Apps Script, dan pengiriman pesanan WhatsApp tetap memerlukan internet.
+- Untuk memasang: unggah seluruh isi folder logiexpress-final ke hosting HTTPS (misalnya GitHub Pages), buka situs di Chrome Android, lalu pilih “Pasang aplikasi” atau menu ⋮ > Tambahkan ke layar utama.
+- Jangan membuka lewat file:// atau hanya dari pratinjau ZIP; Service Worker/PWA memerlukan HTTPS atau localhost.
+- Pertama kali harus dibuka saat online agar halaman dan katalog dapat tersimpan untuk offline.

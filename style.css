@@ -1045,3 +1045,35 @@ body:has(.detail-top-nav) { padding-bottom: 100px !important; }
 .order-price-breakdown strong { color:var(--text-dark); font-weight:700; text-align:right; }
 .order-price-breakdown .order-grand-total { margin-top:2px; padding-top:13px; border-top:1px dashed #e1e5eb; color:var(--text-dark); font-size:14px; font-weight:800; }
 .order-price-breakdown .order-grand-total strong { color:var(--accent-orange,#f4511e); font-size:18px; font-weight:800; }
+
+
+/* Logo konsisten dengan favicon dan ikon aplikasi */
+.brand-logo-box { background: transparent; padding: 0; overflow: hidden; }
+.brand-app-logo { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 12px; }
+.about-badges { align-items: center; flex-wrap: wrap; }
+.install-app-badge { cursor: pointer; font-family: inherit; white-space: nowrap; color: #fff; background: #f4511e; border: 1px solid #f4511e; box-shadow: 0 3px 9px rgba(244,81,30,.16); }
+.install-app-badge .material-icons-round { font-size: 15px !important; color: inherit !important; }
+.install-app-badge:active { transform: scale(.98); }
+.install-app-ready { background: #d94316; border-color: #d94316; }
+.install-app-done { color: #166534; background: #dcfce7; border-color: #bbf7d0; box-shadow: none; cursor: default; }
+@media (max-width: 420px) { .about-badges { gap: 5px; } .install-app-badge { padding: 5px 7px; font-size: 10px; } .badge-item { padding: 5px 7px; } }
+
+
+/* Responsif badge banner: tiga badge sejajar, tombol instalasi lebih terang */
+.about-badges { display:flex; flex-wrap:nowrap !important; align-items:center; gap:8px; min-width:0; width:100%; }
+.about-badges .badge-item { flex:0 1 auto; min-width:0; display:inline-flex; align-items:center; justify-content:center; gap:5px; white-space:nowrap; }
+.about-badges .install-app-badge { flex:0 0 auto; color:#fff !important; background:linear-gradient(135deg,#ff8a35 0%,#ff5b24 100%) !important; border:1px solid #ff9a55 !important; box-shadow:0 3px 10px rgba(255,105,43,.28) !important; font-weight:800; }
+.about-badges .install-app-badge .material-icons-round { color:#fff !important; }
+.about-badges .install-app-ready { background:linear-gradient(135deg,#ff9b43 0%,#ff672e 100%) !important; border-color:#ffad66 !important; }
+.about-badges .install-app-done { background:#dcfce7 !important; color:#166534 !important; border-color:#bbf7d0 !important; box-shadow:none !important; }
+@media (max-width:480px) {
+ .about-badges { gap:5px !important; }
+ .about-badges .badge-item { padding:6px 7px; font-size:10px; gap:3px; }
+ .about-badges .badge-item .material-icons-round { font-size:14px !important; }
+ .about-badges .install-app-badge { padding:6px 8px; font-size:10px; }
+}
+@media (max-width:360px) {
+ .about-badges { gap:4px !important; }
+ .about-badges .badge-item { padding:5px 5px; font-size:9px; }
+ .about-badges .install-app-badge { padding:5px 6px; font-size:9px; }
+}

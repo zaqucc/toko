@@ -1,5 +1,5 @@
 const URL_API_GAS = "https://script.google.com/macros/s/AKfycbyz85UvAfDESNLzBvWXmxfafBVGvpg5mG12WghukOnNwIliEliJLyj6qzRXAZRjdrYh/exec";
-const NOMOR_WHATSAPP_TOKO = "6283878605801"; // Semua tujuan WhatsApp toko menggunakan nomor ini // Nomor WhatsApp admin toko yang sudah digunakan checkout
+const NOMOR_WHATSAPP_TOKO = "6285119818675"; // Semua tujuan WhatsApp toko menggunakan nomor ini // Nomor WhatsApp admin toko yang sudah digunakan checkout
 
 /* ONGKIR GRATIS API KEY: OpenStreetMap + OSRM public demo.
  * Koordinat toko diisi dari tautan lokasi yang dikirim pemilik.
@@ -21,26 +21,15 @@ let semuaProdukGlobal = [];
 
 async function ambilDataProduk() {
     try {
-        const respon = await fetch(URL_API_GAS);
-        const data = await respon.json();
-        
-        if (!data.success || !data.products) {
-            throw new Error(data.message || "Gagal membaca data dari server.");
-        }
-        
-        semuaProdukGlobal = data.products; 
+        const data = await ambilDataProdukTersimpan();
+        semuaProdukGlobal = data.products;
         inisialisasiKategori(semuaProdukGlobal);
         tampilkanProduk(semuaProdukGlobal);
+        if (data.offline) tampilkanStatusOffline(true);
     } catch (error) {
         console.error("Kesalahan API:", error);
         const grid = document.getElementById('konten-produk');
-        if (grid) {
-            grid.innerHTML = `
-                <div style="grid-column: span 2; text-align: center; padding: 30px; background: #fff; border-radius: 16px; border: 1px solid #fee2e2;">
-                    <p style="color: #ef4444; font-size: 13.5px; font-weight: 700; margin: 0 0 6px 0;">⚠️ Gagal memuat data produk.</p>
-                    <p style="color: var(--text-gray); font-size: 12px; margin: 0;">Pastikan akses GAS sudah diset ke "Anyone".</p>
-                </div>`;
-        }
+        if (grid) grid.innerHTML = `<div style="grid-column:span 2;text-align:center;padding:30px;"><p style="font-weight:700;">Katalog belum tersedia offline.</p><p style="font-size:12px;color:var(--text-gray);">Hubungkan internet sekali untuk menyimpan katalog di perangkat.</p></div>`;
     }
 }
 
@@ -134,13 +123,7 @@ async function ambilDetailProduk() {
     }
 
     try {
-        const respon = await fetch(URL_API_GAS);
-        const data = await respon.json();
-        
-        if (!data.success || !data.products) {
-            throw new Error("Gagal mengambil data produk.");
-        }
-
+        const data = await ambilDataProdukTersimpan();
         const produk = data.products.find(p => String(p.id) === String(idProduk));
         if (!produk) {
             alert("Produk tidak ditemukan.");
@@ -151,7 +134,7 @@ async function ambilDetailProduk() {
         renderDetailHalaman(produk);
     } catch (error) {
         console.error("Error detail:", error);
-        document.getElementById('detail-container').innerHTML = `<p style="text-align:center; color:red; padding:30px;">Gagal memuat detail produk.</p>`;
+        document.getElementById('detail-container').innerHTML = `<p style="text-align:center; padding:30px;">Detail produk belum tersimpan. Buka produk ini saat internet tersedia terlebih dahulu.</p>`;
     }
 }
 
@@ -573,7 +556,7 @@ function lanjutKeWhatsApp() {
         const nilaiItem = (Number(item.harga) || 0) * (Number(item.jumlah) || 0);
         return `${index + 1}. ${item.nama} (${item.jumlah}x) - ${rupiah(nilaiItem)}`;
     }).join('\n');
-    const teksPesan = `Halo Admin Logi Express, saya ingin memesan:\n\n` +
+    const teksPesan = `Halo Admin Loji Express, saya ingin memesan:\n\n` +
         `DATA PENERIMA\nNama: ${nama}\nAlamat: ${alamat}\nLokasi GPS pelanggan: https://www.google.com/maps?q=${tujuanLat},${tujuanLng}\nKoordinat tujuan: ${tujuanLat.toFixed(6)}, ${tujuanLng.toFixed(6)}\n\n` +
         `RINCIAN PESANAN\n${rincianItem}\n\n` +
         `Subtotal produk: ${rupiah(subtotal)}\n` +
@@ -601,7 +584,7 @@ function lanjutKeWhatsApp() {
 }
 
 
-/* Logi Express — Pusat Bantuan */
+/* Loji Express — Pusat Bantuan */
 function bukaPusatBantuan() {
     const overlay = document.getElementById('help-center-overlay');
     if (!overlay) return;
@@ -645,8 +628,8 @@ function tampilkanPanduanBelanja() {
 
 function bantuanWhatsApp(jenis) {
     const pesan = jenis === 'pesanan'
-        ? 'Halo Admin Logi Express, saya ingin meminta bantuan terkait pesanan.\n\nNama: \nTanggal/waktu pesanan: \nKendala: '
-        : 'Halo Admin Logi Express, saya ingin bertanya tentang produk dan layanan toko.\n\nPertanyaan saya: ';
+        ? 'Halo Admin Loji Express, saya ingin meminta bantuan terkait pesanan.\n\nNama: \nTanggal/waktu pesanan: \nKendala: '
+        : 'Halo Admin Loji Express, saya ingin bertanya tentang produk dan layanan toko.\n\nPertanyaan saya: ';
     const url = `https://wa.me/${NOMOR_WHATSAPP_TOKO}?text=${encodeURIComponent(pesan)}`;
     const tab = window.open(url, '_blank');
     if (!tab) window.location.href = url;
@@ -656,3 +639,77 @@ document.addEventListener('keydown', function(event) {
         tutupPusatBantuan();
     }
 });
+
+
+/* PWA Loji Express: katalog terakhir disimpan di perangkat untuk dibuka offline. */
+const KUNCI_KATALOG_CACHE = 'logiexpress_katalog_cache_v1';
+async function ambilDataProdukTersimpan() {
+    try {
+        const respon = await fetch(URL_API_GAS, { cache: 'no-store' });
+        if (!respon.ok) throw new Error('Server katalog tidak merespons.');
+        const data = await respon.json();
+        if (!data.success || !Array.isArray(data.products)) throw new Error(data.message || 'Data katalog tidak valid.');
+        try { localStorage.setItem(KUNCI_KATALOG_CACHE, JSON.stringify({ products: data.products, savedAt: Date.now() })); } catch (e) {}
+        tampilkanStatusOffline(false);
+        return { products: data.products, offline: false };
+    } catch (error) {
+        const tersimpan = localStorage.getItem(KUNCI_KATALOG_CACHE);
+        if (tersimpan) {
+            const cache = JSON.parse(tersimpan);
+            if (cache && Array.isArray(cache.products)) return { products: cache.products, offline: true, savedAt: cache.savedAt };
+        }
+        throw error;
+    }
+}
+function tampilkanStatusOffline(offline) {
+    let bar = document.getElementById('le-network-status');
+    if (!bar) {
+        bar = document.createElement('div'); bar.id = 'le-network-status';
+        bar.style.cssText = 'position:fixed;left:12px;right:12px;bottom:130px;z-index:9998;padding:9px 12px;border-radius:12px;text-align:center;font:600 12px/1.4 system-ui;box-shadow:0 4px 18px #0002;';
+        document.body.appendChild(bar);
+    }
+    if (offline || !navigator.onLine) {
+        bar.textContent = 'Mode offline • katalog dari penyimpanan terakhir; harga dan stok bisa berubah.';
+        bar.style.background = '#fff3cd'; bar.style.color = '#7c4a03'; bar.hidden = false;
+    } else { bar.textContent = 'Online'; bar.style.background = '#dcfce7'; bar.style.color = '#166534'; bar.hidden = true; }
+}
+window.addEventListener('online', () => tampilkanStatusOffline(false));
+window.addEventListener('offline', () => tampilkanStatusOffline(true));
+
+let leInstallPrompt = null;
+function siapkanInstalasiPWA() {
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+        window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(err => console.warn('Service worker gagal didaftarkan:', err)));
+    }
+
+    const area = document.getElementById('about-badges');
+    if (!area) return;
+    const btn = document.createElement('button');
+    btn.id = 'le-install-app';
+    btn.type = 'button';
+    btn.className = 'badge-item install-app-badge';
+    btn.innerHTML = '<span class="material-icons-round" aria-hidden="true">install_mobile</span><span>Pasang aplikasi</span>';
+    btn.setAttribute('aria-label', 'Pasang aplikasi Loji Express');
+    area.appendChild(btn);
+
+    btn.addEventListener('click', async () => {
+        if (leInstallPrompt) {
+            leInstallPrompt.prompt();
+            try { await leInstallPrompt.userChoice; } catch (e) {}
+            leInstallPrompt = null;
+        } else {
+            alert('Untuk memasang Loji Express: buka menu browser (⋮), lalu pilih “Tambahkan ke layar utama” atau “Install app”. Website harus dibuka melalui HTTPS.');
+        }
+    });
+    window.addEventListener('beforeinstallprompt', event => {
+        event.preventDefault();
+        leInstallPrompt = event;
+        btn.classList.add('install-app-ready');
+    });
+    window.addEventListener('appinstalled', () => {
+        btn.innerHTML = '<span class="material-icons-round" aria-hidden="true">check_circle</span><span>Aplikasi terpasang</span>';
+        btn.classList.add('install-app-done');
+        btn.disabled = true;
+    });
+}
+siapkanInstalasiPWA();
