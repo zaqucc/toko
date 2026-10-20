@@ -682,34 +682,106 @@ function siapkanInstalasiPWA() {
         window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(err => console.warn('Service worker gagal didaftarkan:', err)));
     }
 
-    const area = document.getElementById('about-badges');
-    if (!area) return;
-    const btn = document.createElement('button');
-    btn.id = 'le-install-app';
-    btn.type = 'button';
-    btn.className = 'badge-item install-app-badge';
-    btn.innerHTML = '<span class="material-icons-round" aria-hidden="true">install_mobile</span><span>Pasang aplikasi</span>';
-    btn.setAttribute('aria-label', 'Pasang aplikasi Loji Express');
-    area.appendChild(btn);
+    const modal = document.getElementById('le-install-modal');
+    const installBtn = document.getElementById('le-install-confirm');
+    const laterBtn = document.getElementById('le-install-later');
+    const closeBtn = document.getElementById('le-install-close');
+    if (!modal || !installBtn || !laterBtn || !closeBtn) return;
 
-    btn.addEventListener('click', async () => {
+    const KEY_SEEN = 'loji_install_popup_seen_v1';
+    const KEY_INSTALLED = 'loji_pwa_installed_v1';
+    const isStandalone = () => window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    let modalTimer = null;
+    let installHelpMode = false;
+
+    const tutupPopup = (tandaiSudahDilihat = true) => {
+        modal.hidden = true;
+        modal.classList.remove('is-visible');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('install-modal-open');
+        if (tandaiSudahDilihat) {
+            try { localStorage.setItem(KEY_SEEN, '1'); } catch (e) {}
+        }
+        if (modalTimer) clearTimeout(modalTimer);
+    };
+    const bukaPopup = () => {
+        if (isStandalone()) return;
+        modal.hidden = false;
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('install-modal-open');
+        requestAnimationFrame(() => modal.classList.add('is-visible'));
+    };
+
+    // Tampilkan hanya pada kunjungan pertama, dan jangan tampilkan jika sudah terpasang.
+    let sudahDilihat = false;
+    try { sudahDilihat = localStorage.getItem(KEY_SEEN) === '1' || localStorage.getItem(KEY_INSTALLED) === '1'; } catch (e) {}
+    if (!sudahDilihat && !isStandalone()) {
+        modalTimer = setTimeout(bukaPopup, 900);
+    }
+
+    installBtn.addEventListener('click', async () => {
+        if (installHelpMode) { tutupPopup(true); return; }
+        if (isStandalone()) { tutupPopup(); return; }
         if (leInstallPrompt) {
             leInstallPrompt.prompt();
-            try { await leInstallPrompt.userChoice; } catch (e) {}
+            try {
+                const choice = await leInstallPrompt.userChoice;
+                if (choice && choice.outcome === 'accepted') {
+                    try { localStorage.setItem(KEY_INSTALLED, '1'); } catch (e) {}
+                }
+            } catch (e) {}
             leInstallPrompt = null;
+            tutupPopup();
         } else {
-            alert('Untuk memasang Loji Express: buka menu browser (⋮), lalu pilih “Tambahkan ke layar utama” atau “Install app”. Website harus dibuka melalui HTTPS.');
+            // Safari/iOS dan beberapa browser tidak espongono il prompt automatico.
+            const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+            const title = document.getElementById('le-install-title');
+            const desc = document.getElementById('le-install-desc');
+            installHelpMode = true;
+            if (title) title.textContent = isIOS ? 'Tambahkan ke layar utama' : 'Pasang dari menu browser';
+            if (desc) desc.textContent = isIOS
+              ? 'Buka menu Bagikan di browser, lalu pilih “Tambahkan ke Layar Utama” untuk memasang Loji Express.'
+              : 'Buka menu browser (⋮), lalu pilih “Install aplikasi” atau “Tambahkan ke layar utama”. Jika pilihan belum tersedia, coba buka website melalui HTTPS.';
+            installBtn.innerHTML = '<span class="material-icons-round">check</span> Mengerti';
         }
     });
+    laterBtn.addEventListener('click', () => tutupPopup(true));
+    closeBtn.addEventListener('click', () => tutupPopup(true));
+    modal.addEventListener('click', event => { if (event.target === modal) tutupPopup(true); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape' && !modal.hidden) tutupPopup(true); });
+
     window.addEventListener('beforeinstallprompt', event => {
         event.preventDefault();
         leInstallPrompt = event;
-        btn.classList.add('install-app-ready');
     });
     window.addEventListener('appinstalled', () => {
-        btn.innerHTML = '<span class="material-icons-round" aria-hidden="true">check_circle</span><span>Aplikasi terpasang</span>';
-        btn.classList.add('install-app-done');
-        btn.disabled = true;
+        try { localStorage.setItem(KEY_INSTALLED, '1'); localStorage.setItem(KEY_SEEN, '1'); } catch (e) {}
+        tutupPopup(false);
     });
 }
 siapkanInstalasiPWA();
+
+/* Carousel banner promosi Loji Express */
+(() => {
+  const track = document.getElementById('promo-track');
+  if (!track) return;
+  const slides = Array.from(track.children);
+  const dots = Array.from(document.querySelectorAll('#promo-dots button'));
+  let current = 0;
+  let timer;
+  const show = (index) => {
+    current = (index + slides.length) % slides.length;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach((dot, i) => { dot.classList.toggle('active', i === current); dot.setAttribute('aria-current', i === current ? 'true' : 'false'); });
+  };
+  const restart = () => { clearInterval(timer); timer = setInterval(() => show(current + 1), 5500); };
+  document.getElementById('promo-prev')?.addEventListener('click', () => { show(current - 1); restart(); });
+  document.getElementById('promo-next')?.addEventListener('click', () => { show(current + 1); restart(); });
+  dots.forEach((dot, i) => dot.addEventListener('click', () => { show(i); restart(); }));
+  document.querySelector('[data-mitra-link]')?.addEventListener('click', (event) => {
+    const url = window.LOJI_MITRA_FORM_URL || '';
+    if (url) { event.preventDefault(); window.open(url, '_blank', 'noopener,noreferrer'); }
+    else { event.preventDefault(); alert('Tautan Google Form pendaftaran mitra belum dipasang. Isi URL formulir pada window.LOJI_MITRA_FORM_URL di script.js.'); }
+  });
+  show(0); restart();
+})();

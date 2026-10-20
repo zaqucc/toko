@@ -64,6 +64,29 @@
         </div>
     </div>
 
+    <!-- CAROUSEL PROMOSI LOJI EXPRESS -->
+    <section class="promo-carousel" aria-label="Informasi dan promosi Loji Express">
+      <div class="promo-track" id="promo-track">
+        <article class="promo-slide">
+          <div class="promo-copy"><span class="promo-kicker">LOJI EXPRESS</span><h2>Belanja lebih mudah</h2><p>Kebutuhan harian, makanan, dan minuman dalam satu tempat.</p><a class="promo-cta" href="#konten-produk">Mulai Belanja <span aria-hidden="true">→</span></a></div>
+          <img src="assets/slide-belanja.webp" alt="Ilustrasi tas belanja berisi kebutuhan harian" loading="eager">
+        </article>
+        <article class="promo-slide">
+          <div class="promo-copy"><span class="promo-kicker">MITRA LOJI EXPRESS</span><h2>Punya usaha? Yuk, bergabung!</h2><p>Kenalkan produk usahamu ke lebih banyak pelanggan. Pendaftaran mitra gratis.</p><a class="promo-cta" href="#" data-mitra-link>Gabung Gratis <span aria-hidden="true">→</span></a></div>
+          <img src="assets/slide-mitra.webp" alt="Ilustrasi pemilik toko dengan pendaftaran mitra gratis" loading="lazy">
+        </article>
+        <article class="promo-slide">
+          <div class="promo-copy"><span class="promo-kicker">PRAKTIS SETIAP HARI</span><h2>Pesanan siap diantar</h2><p>Belanja kebutuhanmu dengan praktis, tanpa perlu keluar rumah.</p><a class="promo-cta" href="#konten-produk">Lihat Produk <span aria-hidden="true">→</span></a></div>
+          <img src="assets/slide-pesanan.webp" alt="Ilustrasi tas dan paket pesanan siap dikirim" loading="lazy">
+        </article>
+      </div>
+      <div class="promo-controls" aria-label="Navigasi banner">
+        <button type="button" class="promo-arrow" id="promo-prev" aria-label="Slide sebelumnya">‹</button>
+        <div class="promo-dots" id="promo-dots"><button class="active" aria-label="Slide 1"></button><button aria-label="Slide 2"></button><button aria-label="Slide 3"></button></div>
+        <button type="button" class="promo-arrow" id="promo-next" aria-label="Slide berikutnya">›</button>
+      </div>
+    </section>
+
     <!-- KATEGORI SCROLL -->
     <div class="category-scroll" id="kategori-container">
         <button class="category-tab active" onclick="filterKategori('Semua', event)">Semua</button>
@@ -89,6 +112,20 @@
             Bantuan
         </button>
     </nav>
+
+    <!-- POPUP AJAKAN INSTALASI PWA: tampil pada kunjungan pertama -->
+    <div class="install-modal-overlay" id="le-install-modal" aria-hidden="true" hidden>
+      <section class="install-modal-card" role="dialog" aria-modal="true" aria-labelledby="le-install-title" aria-describedby="le-install-desc">
+        <button class="install-modal-close" type="button" id="le-install-close" aria-label="Tutup popup"><span class="material-icons-round">close</span></button>
+        <div class="install-modal-art"><div class="install-modal-icon"><span class="material-icons-round">shopping_bag</span></div><span class="install-spark install-spark-one">✦</span><span class="install-spark install-spark-two">✧</span></div>
+        <p class="install-modal-eyebrow">LOJI EXPRESS</p>
+        <h2 id="le-install-title">Belanja makin praktis!</h2>
+        <p id="le-install-desc">Pasang Loji Express di layar utama HP kamu agar lebih mudah dibuka kapan saja.</p>
+        <button class="install-modal-primary" type="button" id="le-install-confirm"><span class="material-icons-round">download</span> Pasang Loji Express</button>
+        <button class="install-modal-secondary" type="button" id="le-install-later">Nanti saja</button>
+        <p class="install-modal-note"><span class="material-icons-round">verified_user</span> Gratis · Praktis · Mudah diakses</p>
+      </section>
+    </div>
 
     <!-- POPUP PUSAT BANTUAN -->
     <div class="help-center-overlay" id="help-center-overlay" aria-hidden="true" onclick="klikLuarPusatBantuan(event)">

@@ -29,3 +29,9 @@ FITUR PWA / OFFLINE
 - Untuk memasang: unggah seluruh isi folder logiexpress-final ke hosting HTTPS (misalnya GitHub Pages), buka situs di Chrome Android, lalu pilih “Pasang aplikasi” atau menu ⋮ > Tambahkan ke layar utama.
 - Jangan membuka lewat file:// atau hanya dari pratinjau ZIP; Service Worker/PWA memerlukan HTTPS atau localhost.
 - Pertama kali harus dibuka saat online agar halaman dan katalog dapat tersimpan untuk offline.
+
+
+KONFIGURASI FORM MITRA LOJI EXPRESS
+Untuk menghubungkan tombol “Gabung Gratis” ke Google Form, tambahkan baris berikut di bagian paling atas script.js dan ganti URL contoh dengan URL formulir milik Anda:
+window.LOJI_MITRA_FORM_URL = 'https://forms.gle/URL_FORM_MITRA_ANDA';
+Jangan gunakan URL contoh sebelum diganti dengan tautan formulir yang benar.
