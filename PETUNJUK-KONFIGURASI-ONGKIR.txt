@@ -2,8 +2,12 @@ LOGI EXPRESS — ONGKIR OTOMATIS DARI GPS (OSRM + OPENSTREETMAP)
 
 Pengaturan saat ini:
 - Koordinat toko: -6.5187284, 107.2301741 (pastikan titik toko benar sebelum dipakai).
-- Tarif: Rp2.000 per km rute berkendara.
-- Ongkir minimum: Rp5.000.
+- Di bawah 1 km: Rp3.000.
+- 1–3 km: Rp5.000.
+- Di atas 3–5 km: Rp7.000.
+- Di atas 5–7 km: Rp9.000.
+- Di atas 7–10 km: Rp12.000.
+- Di atas 10 km: Rp12.000 + Rp1.500 untuk setiap km tambahan (bagian km di atas 10 dibulatkan ke atas).
 - Tidak ada batas jarak maksimum yang ditetapkan dan tidak ada gratis ongkir.
 - Tidak memerlukan Google Maps API key.
 

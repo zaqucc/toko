@@ -1,4 +1,4 @@
-const CACHE_NAME = 'logiexpress-pwa-v3';
+const CACHE_NAME = 'logiexpress-pwa-v4';
 const APP_SHELL = ['./', './index.html', './detail.html', './order.html', './style.css', './script.js', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', event => { event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('logiexpress-pwa-') && key !== CACHE_NAME).map(key => caches.delete(key)))).then(() => self.clients.claim())); });

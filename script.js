@@ -8,10 +8,21 @@ const NOMOR_WHATSAPP_TOKO = "6285119818675"; // Semua tujuan WhatsApp toko mengg
 const ONGKIR_CONFIG = {
     tokoLat: -6.5187284,
     tokoLng: 107.2301741,
-    tarifPerKm: 2000,
-    ongkirMinimum: 5000,
     osrmEndpoint: 'https://router.project-osrm.org/route/v1/driving'
 };
+
+// Tarif ongkir Logi Express berdasarkan jarak rute berkendara.
+// Batas menggunakan jarak aktual; jarak tambahan di atas 10 km dibulatkan ke atas per km.
+function hitungTarifOngkir(jarakKm) {
+    const jarak = Number(jarakKm);
+    if (!Number.isFinite(jarak) || jarak < 0) throw new Error('Jarak pengiriman tidak valid.');
+    if (jarak < 1) return 3000;
+    if (jarak <= 3) return 5000;
+    if (jarak <= 5) return 7000;
+    if (jarak <= 7) return 9000;
+    if (jarak <= 10) return 12000;
+    return 12000 + Math.ceil(jarak - 10) * 1500;
+}
 
 let hasilOngkir = null;
 let titikTujuanPengiriman = null;
@@ -445,8 +456,7 @@ async function hitungOngkirBerdasarkanJarak(dariTombol = false) {
         const route = data.routes[0];
         const jarakKm = route.distance / 1000;
         const jarakDibulatkan = Math.ceil(jarakKm);
-        const tarifPerKm = Number(ONGKIR_CONFIG.tarifPerKm);
-        const ongkir = Math.max(Number(ONGKIR_CONFIG.ongkirMinimum), jarakDibulatkan * tarifPerKm);
+        const ongkir = hitungTarifOngkir(jarakKm);
         const jarakTeks = `${jarakKm.toFixed(1)} km`;
         const alamat = document.getElementById('alamat')?.value.trim() || '';
         hasilOngkir = {
@@ -455,7 +465,7 @@ async function hitungOngkirBerdasarkanJarak(dariTombol = false) {
         };
         const jarakEl = document.getElementById('jarak-pengiriman');
         if (jarakEl) jarakEl.textContent = `${jarakTeks} (tarif dihitung untuk ${jarakDibulatkan} km)`;
-        aturStatusOngkir(`Ongkir berhasil dihitung otomatis dari posisi GPS: Rp${tarifPerKm.toLocaleString('id-ID')}/km, minimum Rp${Number(ONGKIR_CONFIG.ongkirMinimum).toLocaleString('id-ID')}.`, 'is-success');
+        aturStatusOngkir(`Ongkir berhasil dihitung otomatis berdasarkan tarif bertingkat Logi Express. Untuk jarak di atas 10 km, biaya bertambah Rp1.500 per km.`, 'is-success');
         hitungUlangTotal();
     } catch (error) {
         hasilOngkir = null;
@@ -778,10 +788,27 @@ siapkanInstalasiPWA();
   document.getElementById('promo-prev')?.addEventListener('click', () => { show(current - 1); restart(); });
   document.getElementById('promo-next')?.addEventListener('click', () => { show(current + 1); restart(); });
   dots.forEach((dot, i) => dot.addEventListener('click', () => { show(i); restart(); }));
-  document.querySelector('[data-mitra-link]')?.addEventListener('click', (event) => {
-    const url = window.LOJI_MITRA_FORM_URL || '';
-    if (url) { event.preventDefault(); window.open(url, '_blank', 'noopener,noreferrer'); }
-    else { event.preventDefault(); alert('Tautan Google Form pendaftaran mitra belum dipasang. Isi URL formulir pada window.LOJI_MITRA_FORM_URL di script.js.'); }
+  const mitraPopup = document.getElementById('mitra-signup-overlay');
+  const bukaPopupMitra = () => {
+    if (!mitraPopup) return;
+    mitraPopup.classList.add('is-open');
+    mitraPopup.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('mitra-signup-open');
+    mitraPopup.querySelector('.mitra-signup-close')?.focus();
+  };
+  window.tutupPopupMitra = (event) => {
+    if (event && event.target !== mitraPopup) return;
+    if (!mitraPopup) return;
+    mitraPopup.classList.remove('is-open');
+    mitraPopup.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('mitra-signup-open');
+  };
+  document.querySelectorAll('[data-mitra-link]').forEach(link => link.addEventListener('click', event => {
+    event.preventDefault();
+    bukaPopupMitra();
+  }));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && mitraPopup?.classList.contains('is-open')) window.tutupPopupMitra();
   });
   show(0); restart();
 })();

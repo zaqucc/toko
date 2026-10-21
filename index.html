@@ -165,6 +165,21 @@
         </section>
     </div>
 
+
+    <!-- POPUP PENDAFTARAN MITRA -->
+    <div class="mitra-signup-overlay" id="mitra-signup-overlay" aria-hidden="true" onclick="tutupPopupMitra(event)">
+      <section class="mitra-signup-modal" role="dialog" aria-modal="true" aria-labelledby="mitra-signup-title">
+        <button class="mitra-signup-close" type="button" onclick="tutupPopupMitra()" aria-label="Tutup popup"><span class="material-icons-round">close</span></button>
+        <div class="mitra-signup-icon"><span class="material-icons-round">storefront</span></div>
+        <p class="mitra-signup-eyebrow">MITRA LOJI EXPRESS</p>
+        <h2 id="mitra-signup-title">Yuk, gabung jadi mitra!</h2>
+        <p class="mitra-signup-desc">Pendaftaran gratis. Pilih cara yang paling nyaman untuk mendaftarkan usahamu.</p>
+        <a class="mitra-signup-action mitra-signup-form" id="mitra-signup-form-link" href="https://forms.gle/T4YcHUA4zeA5hYSW9" target="_blank" rel="noopener noreferrer"><span class="material-icons-round">description</span><span><strong>Daftar lewat Google Form</strong><small>Isi formulir pendaftaran secara online</small></span><span class="material-icons-round mitra-signup-arrow">arrow_forward</span></a>
+        <a class="mitra-signup-action mitra-signup-admin" id="mitra-signup-admin-link" href="https://wa.me/6285119818675?text=Halo%20Admin%20Loji%20Express%2C%20saya%20ingin%20mendaftar%20sebagai%20mitra.%20Mohon%20informasinya." target="_blank" rel="noopener noreferrer"><span class="material-icons-round">chat</span><span><strong>Daftar lewat Admin</strong><small>Hubungi admin melalui WhatsApp</small></span><span class="material-icons-round mitra-signup-arrow">arrow_forward</span></a>
+        <p class="mitra-signup-note"><span class="material-icons-round">verified</span> Gratis, tanpa biaya pendaftaran</p>
+      </section>
+    </div>
+
     <script src="script.js"></script>
     <script>
         window.onload = ambilDataProduk;
