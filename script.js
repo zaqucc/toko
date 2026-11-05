@@ -530,7 +530,7 @@ async function prosesCheckoutDenganGPS() {
 
     if (tombol) {
         tombol.disabled = true;
-        tombol.innerHTML = '<span class="material-icons-round">sync</span><span>Mengambil lokasi…</span>';
+        tombol.textContent = 'Mengambil lokasi…';
     }
     tampilkanStatusCheckout('Meminta izin lokasi perangkat. Pastikan GPS aktif dan izinkan akses lokasi.');
 
@@ -567,7 +567,7 @@ async function prosesCheckoutDenganGPS() {
     } finally {
         if (tombol) {
             tombol.disabled = false;
-            tombol.innerHTML = '<span class="material-icons-round">my_location</span><span>Lanjutkan Pesanan</span>';
+            tombol.textContent = 'Lanjutkan Pesanan';
         }
     }
 }
