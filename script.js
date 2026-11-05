@@ -655,9 +655,9 @@ function kirimKeWhatsApp() {
     document.getElementById('wa-modal-desc').textContent = 'Periksa subtotal produk, jarak pengiriman, ongkir, dan total pembayaran sebelum melanjutkan.';
     document.getElementById('wa-order-summary').style.display = 'block';
     document.getElementById('wa-summary-name').textContent = nama;
-    document.getElementById('wa-summary-count').textContent = `${jumlahItem} item (${keranjang.length} jenis produk)`;
+    document.getElementById('wa-summary-count').textContent = `${jumlahItem} item`;
     document.getElementById('wa-summary-subtotal').textContent = rupiah(subtotal);
-    document.getElementById('wa-summary-distance').textContent = `${hasilOngkir.jarakTeks} (${hasilOngkir.jarakDibulatkan} km untuk tarif)`;
+    document.getElementById('wa-summary-distance').textContent = hasilOngkir.jarakTeks;
     document.getElementById('wa-summary-shipping').textContent = rupiah(ongkir);
     document.getElementById('wa-summary-total').textContent = rupiah(total);
     document.getElementById('wa-modal-actions').innerHTML = `
