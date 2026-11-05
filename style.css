@@ -2227,3 +2227,130 @@ body { padding-bottom: calc(78px + env(safe-area-inset-bottom)); }
   .marketplace-dock-nav .dock-icon-wrap > .material-icons-round { font-size:21px; }
 }
 @media (prefers-reduced-motion:reduce) { .marketplace-dock-nav { transition:none !important; } }
+
+
+/* LOJI EXPRESS — soft marketplace finish */
+:root {
+  --bg-soft: #f8f5f1;
+  --accent-orange: #f05a35;
+  --accent-gradient: linear-gradient(135deg, #ff8755 0%, #ef5533 100%);
+}
+body { background: #f8f5f1; color: #302d2a; }
+.market-header {
+  background: linear-gradient(180deg,#fff 0%,#fffaf7 100%);
+  border-bottom: 0;
+  box-shadow: 0 3px 18px rgba(91,61,45,.045);
+}
+.market-brand-logo { border-radius: 11px; }
+.market-delivery { color: #7d716a; }
+.market-delivery .material-icons-round { color: #ef6845; }
+.market-search-trigger {
+  border: 1px solid #f0e6df;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(74,49,36,.035);
+}
+.market-search-trigger .material-icons-round { color: #ed6845; }
+.market-cart-shortcut {
+  border: 1px solid #f0e6df;
+  border-radius: 14px;
+  background: #fff7f2;
+  color: #ed6845;
+}
+.promo-carousel {
+  border-radius: 18px;
+  background: #fff8f3;
+  box-shadow: 0 5px 18px rgba(92,58,39,.07);
+}
+.promo-slide {
+  border-radius: 18px;
+  background: linear-gradient(115deg,#fff0e7 0%,#ffe3d5 58%,#ffede4 100%);
+}
+.promo-copy h2 { color: #3b302b; }
+.promo-cta { border-radius: 999px; padding: 0 15px; }
+.promo-controls { background: transparent; }
+.promo-arrow { background: #fff; border: 1px solid #f2ddd2; }
+.category-scroll {
+  background: transparent;
+  border: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.category-tab {
+  min-height: 35px;
+  border-radius: 999px;
+  border-color: #eee4dd;
+  background: #fff;
+  color: #746960;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-shadow: 0 2px 7px rgba(80,55,40,.035);
+}
+.category-tab.active {
+  border-color: #f05a35;
+  background: #f05a35;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(240,90,53,.18);
+}
+.catalog-container { padding-top: 18px; }
+.marketplace-catalog-heading { margin-bottom: 14px; }
+.marketplace-eyebrow { color: #e97853; letter-spacing: 1.15px; }
+.marketplace-catalog-heading h2 { color: #332d29; letter-spacing: -.45px; }
+.marketplace-product-count {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #fff;
+  color: #8b7c72;
+}
+.marketplace-product-grid { gap: 11px; }
+.marketplace-product-grid .premium-card {
+  border: 1px solid #f0e9e3;
+  border-radius: 17px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgba(75,53,39,.045);
+  overflow: hidden;
+}
+.marketplace-product-grid .img-container { background: #fbf8f5; }
+.marketplace-product-grid .premium-img { padding: 7px; }
+.marketplace-product-grid .tag-stok {
+  top: 9px; left: 9px;
+  border-radius: 999px;
+  padding: 4px 8px;
+}
+.marketplace-product-grid .info-container { padding: 11px; gap: 9px; }
+.marketplace-product-grid .item-name {
+  color: #39332f;
+  font-size: 11px;
+  line-height: 1.48;
+}
+.marketplace-product-grid .item-price { color: #e95a39; font-size: 13px; }
+.marketplace-product-grid .btn-round-add {
+  width: 31px; height: 31px; flex-basis: 31px;
+  border-radius: 11px;
+  background: #fff0e9;
+  color: #e95a39;
+}
+.marketplace-product-grid .btn-round-add:active { transform: scale(.94); }
+.marketplace-dock-nav {
+  width: min(420px,calc(100% - 30px));
+  height: 68px;
+  bottom: calc(13px + env(safe-area-inset-bottom));
+  padding: 7px 9px;
+  border: 1px solid rgba(245,235,228,.95);
+  border-radius: 23px;
+  background: rgba(255,255,255,.94);
+  box-shadow: 0 9px 30px rgba(72,49,35,.14);
+}
+.marketplace-dock-nav .dock-link { border-radius: 15px; }
+.marketplace-dock-nav .dock-link.active { background: #fff2ec; color: #e95a39; }
+.marketplace-dock-nav .dock-link.active .dock-icon-wrap { background: #ffe3d7; }
+@media (min-width:600px) {
+  .marketplace-product-grid { gap: 14px; }
+  .marketplace-product-grid .premium-card { border-radius: 19px; }
+  .marketplace-product-grid .info-container { padding: 13px; }
+}
+@media (max-width:360px) {
+  .marketplace-product-grid { gap: 8px; }
+  .marketplace-product-grid .premium-card { border-radius: 14px; }
+  .marketplace-product-grid .info-container { padding: 8px; }
+}
