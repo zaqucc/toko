@@ -263,7 +263,6 @@ function renderDetailHalaman(p) {
             <div class="detail-action-inner">
                 <div class="detail-action-caption"><strong>${hargaFormat}</strong><span>Siap untuk dipesan</span></div>
                 <button class="btn-add-to-cart-modern" id="detail-add-cart" type="button">
-                    <span class="material-icons-round">add_shopping_cart</span>
                     <span>Tambah ke Keranjang</span>
                 </button>
             </div>`;
