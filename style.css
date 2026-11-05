@@ -2984,3 +2984,40 @@ body { background: #f8f5f1; color: #332e2a; }
   content: none;
   display: none;
 }
+
+
+/* CART CHECKOUT — simplified recipient form and GPS-triggered checkout */
+.checkout-recipient-card {
+  margin-top: 14px;
+}
+.checkout-recipient-card h2 {
+  margin: 0 0 18px;
+  color: #342e2a;
+  font-size: 16px;
+  font-weight: 800;
+}
+.checkout-recipient-card .form-group { margin-bottom: 16px; }
+.checkout-recipient-card .form-control {
+  min-height: 48px;
+  border: 1px solid #e9dfd7;
+  border-radius: 13px;
+  background: #fffdfa;
+  color: #332e2a;
+  padding: 12px 14px;
+}
+.checkout-recipient-card textarea.form-control {
+  min-height: 94px;
+  resize: vertical;
+}
+.checkout-status {
+  margin: 2px 0 14px;
+  padding: 10px 12px;
+  border-radius: 11px;
+  background: #f6f0e9;
+  color: #77685d;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.checkout-status.is-error { background:#fff0ed; color:#b84d3c; }
+.checkout-status.is-success { background:#edf7ef; color:#34744a; }
+.checkout-status[hidden] { display:none; }
