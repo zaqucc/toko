@@ -1,0 +1,41 @@
+LOGI EXPRESS — ONGKIR OTOMATIS DARI GPS (OSRM + OPENSTREETMAP)
+
+Pengaturan saat ini:
+- Koordinat toko: -6.5187284, 107.2301741 (pastikan titik toko benar sebelum dipakai).
+- Di bawah 1 km: Rp3.000.
+- 1–3 km: Rp5.000.
+- Di atas 3–5 km: Rp7.000.
+- Di atas 5–7 km: Rp9.000.
+- Di atas 7–10 km: Rp12.000.
+- Di atas 10 km: Rp12.000 + Rp1.500 untuk setiap km tambahan (bagian km di atas 10 dibulatkan ke atas).
+- Tidak ada batas jarak maksimum yang ditetapkan dan tidak ada gratis ongkir.
+- Tidak memerlukan Google Maps API key.
+
+Alur pelanggan:
+1. Pelanggan mengisi nama dan alamat/patokan rumah untuk membantu kurir.
+2. Pelanggan menekan satu tombol “Gunakan lokasi saya & hitung ongkir”.
+3. Browser meminta izin GPS. Setelah diizinkan, posisi HP saat itu otomatis menjadi titik tujuan.
+4. Website menghitung jarak rute berkendara dari toko ke koordinat GPS tersebut melalui OSRM. Peta tidak ditampilkan dan pelanggan tidak perlu memasang pin.
+5. Ongkir dan total otomatis diperbarui. Pelanggan kemudian menekan tombol pesan WhatsApp untuk mengirim pesanan.
+
+Penting:
+- GPS hanya dapat dibaca jika pelanggan mengizinkan izin lokasi. Website harus dibuka melalui HTTPS.
+- Pelanggan harus berada di lokasi pengiriman saat menghitung ongkir. GPS bisa kurang akurat di dalam ruangan. Alamat teks tetap perlu diisi sebagai petunjuk kurir.
+- OSRM demo publik cocok untuk pengujian/pemakaian ringan, tidak menjamin SLA untuk operasional komersial.
+- Pastikan nomor WhatsApp toko dan koordinat toko di script.js benar sebelum publikasi.
+
+
+FITUR PWA / OFFLINE
+- Situs memiliki manifest.webmanifest, service-worker.js, dan ikon aplikasi.
+- Setelah dibuka online melalui HTTPS, halaman utama, detail, keranjang, CSS, dan JavaScript akan tersimpan di perangkat.
+- Katalog produk terakhir yang berhasil dimuat disimpan di perangkat dan bisa ditampilkan ketika internet terputus. Harga/stok offline mungkin sudah tidak terbaru.
+- GPS, penghitungan rute OSRM, pembaruan produk dari Google Apps Script, dan pengiriman pesanan WhatsApp tetap memerlukan internet.
+- Untuk memasang: unggah seluruh isi folder logiexpress-final ke hosting HTTPS (misalnya GitHub Pages), buka situs di Chrome Android, lalu pilih “Pasang aplikasi” atau menu ⋮ > Tambahkan ke layar utama.
+- Jangan membuka lewat file:// atau hanya dari pratinjau ZIP; Service Worker/PWA memerlukan HTTPS atau localhost.
+- Pertama kali harus dibuka saat online agar halaman dan katalog dapat tersimpan untuk offline.
+
+
+KONFIGURASI FORM MITRA LOJI EXPRESS
+Untuk menghubungkan tombol “Gabung Gratis” ke Google Form, tambahkan baris berikut di bagian paling atas script.js dan ganti URL contoh dengan URL formulir milik Anda:
+window.LOJI_MITRA_FORM_URL = 'https://forms.gle/URL_FORM_MITRA_ANDA';
+Jangan gunakan URL contoh sebelum diganti dengan tautan formulir yang benar.
