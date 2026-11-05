@@ -28,32 +28,18 @@
             <p style="text-align:center; color:var(--text-gray); padding:20px;">Memuat keranjang...</p>
         </div>
 
-        <!-- FORM DATA PENGIRIMAN -->
-        <div class="form-card">
-            <h2>Data Pengiriman</h2>
+        <!-- DATA PENERIMA -->
+        <div class="form-card checkout-recipient-card">
+            <h2>Data Penerima</h2>
             <div class="form-group">
-                <label>Nama Lengkap</label>
-                <input type="text" id="nama" class="form-control" placeholder="Masukkan nama penerima">
+                <label for="nama">Nama penerima</label>
+                <input type="text" id="nama" class="form-control" autocomplete="name" placeholder="Masukkan nama penerima" required>
             </div>
-
             <div class="form-group">
-                <label>Alamat Lengkap & Patokan Rumah</label>
-                <textarea id="alamat" class="form-control" rows="3" placeholder="Contoh: Kp. Jati, RT 04/02, Desa Cintalaksana"></textarea>
+                <label for="alamat">Alamat lengkap</label>
+                <textarea id="alamat" class="form-control" rows="3" autocomplete="street-address" placeholder="Nama jalan, RT/RW, desa/kelurahan, kecamatan, dan patokan rumah" required></textarea>
             </div>
-
-            <div class="shipping-card" aria-live="polite">
-                <div class="shipping-card-heading">
-                    <span class="material-icons-round">local_shipping</span>
-                    <div><strong>Ongkir otomatis</strong><small>Dihitung otomatis dari posisi GPS HP kamu ke toko.</small></div>
-                </div>
-                <p id="ongkir-status" class="shipping-status">Tekan tombol di bawah. Izinkan akses lokasi agar sistem mengambil posisi HP kamu dan menghitung ongkir otomatis.</p>
-                <button type="button" id="pilih-lokasi-btn" class="btn-calculate-shipping" onclick="ambilLokasiDanHitungOngkir()">
-                    <span class="material-icons-round">my_location</span> Gunakan lokasi saya
-                </button>
-                <div class="shipping-distance-row"><span>Jarak pengiriman</span><strong id="jarak-pengiriman">Belum dihitung</strong></div>
-                <p class="map-disclaimer">Lokasi GPS digunakan sebagai tujuan pengiriman. Pastikan kamu berada di lokasi yang benar saat menghitung ongkir. Alamat dan patokan rumah tetap perlu diisi untuk membantu kurir.</p>
-            </div>
-
+            <p id="checkout-status" class="checkout-status" role="status" aria-live="polite" hidden></p>
             <div class="order-price-breakdown">
                 <div><span>Subtotal produk</span><strong id="subtotal-produk">Rp 0</strong></div>
                 <div><span>Ongkir</span><strong id="ongkir-akhir">Belum dihitung</strong></div>
@@ -64,9 +50,9 @@
 
     <!-- TOMBOL AKSI PESAN WHATSAPP DI BAWAH -->
     <div class="action-bar">
-        <button class="btn-submit-order" onclick="kirimKeWhatsApp()">
-            <span class="material-icons-round">chat</span>
-            <span>PESAN SEKARANG VIA WHATSAPP</span>
+        <button class="btn-submit-order" id="checkout-submit" type="button" onclick="prosesCheckoutDenganGPS()">
+            <span class="material-icons-round">my_location</span>
+            <span>Lanjutkan Pesanan</span>
         </button>
     </div>
 
@@ -98,9 +84,7 @@
         window.addEventListener('load', () => {
             renderKeranjang();
             const alamatInput = document.getElementById('alamat');
-            if (alamatInput) {
-                alamatInput.addEventListener('input', alamatPengirimanBerubah);
-            }
+            if (alamatInput) alamatInput.addEventListener('input', alamatPengirimanBerubah);
         });
     </script>
 </body>
