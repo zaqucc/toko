@@ -1,8 +1,8 @@
 const SUPABASE_URL = "https://rulhiqqvsbqsluxguzvs.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_BG8McDp-4A6WSy-P5M_cPA_y2Pg0PcG";
+// Publishable key adalah API key non-JWT: kirim melalui header apikey saja.
 const SUPABASE_HEADERS = {
-    apikey: SUPABASE_PUBLISHABLE_KEY,
-    Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
+    apikey: SUPABASE_PUBLISHABLE_KEY
 };
 const NOMOR_WHATSAPP_TOKO = "6285119818675"; // Semua tujuan WhatsApp toko menggunakan nomor ini // Nomor WhatsApp admin toko yang sudah digunakan checkout
 
