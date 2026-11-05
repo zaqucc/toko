@@ -2614,3 +2614,31 @@ body { background: #f8f5f1; color: #332e2a; }
   .promo-slide { min-height: 205px; padding: 0; }
   .promo-copy { padding: 18px 16px 28px; }
 }
+
+
+/* FINAL BANNER LAYERING — photo covers every pixel behind copy and CTA */
+.promo-carousel,
+.promo-slide,
+.promo-controls {
+  background: transparent !important;
+}
+.promo-slide {
+  position: relative;
+  isolation: isolate;
+}
+.promo-slide img {
+  z-index: 0 !important;
+}
+.promo-slide::after {
+  z-index: 1 !important;
+}
+.promo-slide .promo-copy {
+  position: relative;
+  z-index: 2 !important;
+  background: transparent !important;
+}
+.promo-slide .promo-controls,
+.promo-carousel .promo-controls {
+  z-index: 3 !important;
+  background: transparent !important;
+}
