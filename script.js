@@ -499,6 +499,79 @@ function ambilLokasiDanHitungOngkir() {
     }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
 }
 
+function tampilkanStatusCheckout(pesan, status = '') {
+    const el = document.getElementById('checkout-status');
+    if (!el) return;
+    el.textContent = pesan;
+    el.className = `checkout-status${status ? ` ${status}` : ''}`;
+    el.hidden = !pesan;
+}
+
+async function prosesCheckoutDenganGPS() {
+    const keranjang = bacaKeranjangAman();
+    const nama = document.getElementById('nama')?.value.trim() || '';
+    const alamat = document.getElementById('alamat')?.value.trim() || '';
+    const tombol = document.getElementById('checkout-submit');
+
+    if (!keranjang.length) {
+        tampilkanPopupPesanError('Keranjang masih kosong', 'Tambahkan produk terlebih dahulu sebelum membuat pesanan.');
+        return;
+    }
+    if (!nama || !alamat) {
+        tampilkanStatusCheckout('Lengkapi nama penerima dan alamat lengkap terlebih dahulu.', 'is-error');
+        if (!nama) document.getElementById('nama')?.focus();
+        else document.getElementById('alamat')?.focus();
+        return;
+    }
+    if (!navigator.geolocation) {
+        tampilkanStatusCheckout('Perangkat atau browser ini tidak mendukung akses GPS. Gunakan browser yang mendukung lokasi.', 'is-error');
+        return;
+    }
+
+    if (tombol) {
+        tombol.disabled = true;
+        tombol.innerHTML = '<span class="material-icons-round">sync</span><span>Mengambil lokasi…</span>';
+    }
+    tampilkanStatusCheckout('Meminta izin lokasi perangkat. Pastikan GPS aktif dan izinkan akses lokasi.');
+
+    try {
+        const posisi = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+                enableHighAccuracy: true,
+                timeout: 20000,
+                maximumAge: 0
+            });
+        });
+
+        lokasiPelangganSaatIni = {
+            lat: posisi.coords.latitude,
+            lng: posisi.coords.longitude
+        };
+        titikTujuanPengiriman = { ...lokasiPelangganSaatIni };
+        tampilkanStatusCheckout('Lokasi ditemukan. Sedang menghitung jarak dan ongkir…');
+        await hitungOngkirBerdasarkanJarak();
+
+        if (!hasilOngkir) {
+            tampilkanStatusCheckout('Ongkir belum berhasil dihitung. Periksa koneksi internet atau coba lagi di tempat dengan sinyal GPS lebih baik.', 'is-error');
+            return;
+        }
+
+        tampilkanStatusCheckout('Ongkir berhasil dihitung. Menyiapkan ringkasan pesanan…', 'is-success');
+        kirimKeWhatsApp();
+    } catch (error) {
+        let pesan = 'Lokasi tidak berhasil diakses. Aktifkan GPS lalu coba lagi.';
+        if (error && error.code === 1) pesan = 'Izin lokasi ditolak. Izinkan akses lokasi untuk situs ini melalui pengaturan browser.';
+        else if (error && error.code === 2) pesan = 'Lokasi perangkat tidak tersedia. Aktifkan GPS/Lokasi pada HP lalu coba lagi.';
+        else if (error && error.code === 3) pesan = 'GPS terlalu lama merespons. Coba lagi di area terbuka dengan sinyal GPS lebih baik.';
+        tampilkanStatusCheckout(pesan, 'is-error');
+    } finally {
+        if (tombol) {
+            tombol.disabled = false;
+            tombol.innerHTML = '<span class="material-icons-round">my_location</span><span>Lanjutkan Pesanan</span>';
+        }
+    }
+}
+
 async function hitungOngkirBerdasarkanJarak(dariTombol = false) {
     const tombol = document.getElementById('pilih-lokasi-btn');
     if (!titikTujuanPengiriman) {
@@ -566,7 +639,7 @@ function kirimKeWhatsApp() {
         return;
     }
     if (!hasilOngkir) {
-        tampilkanPopupPesanError('Ongkir belum dihitung', 'Tekan tombol lokasi dan izinkan GPS agar ongkir dihitung otomatis terlebih dahulu.');
+        tampilkanPopupPesanError('Ongkir belum dihitung', 'Tekan tombol Lanjutkan Pesanan dan izinkan akses GPS agar ongkir dihitung otomatis terlebih dahulu.');
         return;
     }
 
