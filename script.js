@@ -248,6 +248,32 @@ function gantiFotoUtama(url, el) {
     el.classList.add('active-thumb');
 }
 
+function bacaKeranjangAman() {
+    try {
+        const data = JSON.parse(localStorage.getItem('keranjang') || '[]');
+        return Array.isArray(data) ? data : [];
+    } catch (error) {
+        console.warn('Data keranjang tidak valid:', error);
+        return [];
+    }
+}
+
+function perbaruiBadgeKeranjang() {
+    const badge = document.getElementById('cart-count-badge');
+    if (!badge) return;
+    const jumlah = bacaKeranjangAman().reduce((total, item) => total + Math.max(0, Number(item.jumlah) || 0), 0);
+    badge.textContent = jumlah > 99 ? '99+' : String(jumlah);
+    badge.hidden = jumlah === 0;
+    badge.setAttribute('aria-label', jumlah ? `${jumlah} barang di keranjang` : 'Keranjang kosong');
+}
+
+function scrollKeKategori() {
+    const kategori = document.getElementById('kategori-container');
+    if (!kategori) return;
+    kategori.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    kategori.querySelector('.category-tab')?.focus({ preventScroll: true });
+}
+
 function toggleSearchModal() {
     const modal = document.getElementById('search-modal');
     const input = document.getElementById('search-input');
@@ -305,6 +331,7 @@ function tambahKeKeranjang(produk) {
     }
     
     localStorage.setItem('keranjang', JSON.stringify(keranjang));
+    perbaruiBadgeKeranjang();
     tampilkanNotifikasiKeranjang(produk, indexExist !== -1);
 }
 
@@ -588,6 +615,7 @@ function lanjutKeWhatsApp() {
 
     if (tabWhatsApp) {
         localStorage.removeItem('keranjang');
+        perbaruiBadgeKeranjang();
         dataPesananWhatsApp = null;
         hasilOngkir = null;
         tutupPopupPesan();
@@ -802,6 +830,8 @@ function siapkanInstalasiPWA() {
     });
 }
 siapkanInstalasiPWA();
+perbaruiBadgeKeranjang();
+window.addEventListener('storage', perbaruiBadgeKeranjang);
 
 /* Carousel banner promosi Loji Express */
 (() => {
