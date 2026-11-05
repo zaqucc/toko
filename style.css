@@ -1153,3 +1153,123 @@ body.install-modal-open{overflow:hidden}
 body.mitra-signup-open{overflow:hidden}
 @media(max-width:380px){.mitra-signup-modal{padding:23px 16px 17px;border-radius:22px}.mitra-signup-modal h2{font-size:21px}.mitra-signup-action{gap:9px;padding:10px}.mitra-signup-action strong{font-size:12px}.mitra-signup-action small{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.mitra-signup-overlay,.mitra-signup-modal{transition:none}}
+
+
+/* =====================================================
+   LOJI EXPRESS — REFINED PROFESSIONAL STOREFRONT
+   Visual-only layer: catalog, cart, GPS shipping and WhatsApp flows unchanged.
+   ===================================================== */
+:root {
+  --accent-orange: #f97316;
+  --accent-gradient: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+  --bg-soft: #f7f8fa;
+  --text-dark: #24282e;
+  --text-gray: #737b87;
+  --card-shadow: 0 3px 14px rgba(25, 32, 44, .045);
+  --hover-shadow: 0 12px 28px rgba(25, 32, 44, .09);
+}
+body { background: #f7f8fa; color: #24282e; }
+.app-header {
+  min-height: 72px;
+  background: rgba(255,255,255,.97);
+  border-bottom-color: #edf0f3;
+  box-shadow: 0 2px 12px rgba(28,35,45,.035);
+}
+.brand-logo-box { border-radius: 13px; }
+.brand-text h1 { font-size: 18px; font-weight: 800; letter-spacing: -.55px; }
+.brand-text p { color: #7a828d; font-weight: 500; }
+.location-icon { color: #f97316; }
+.search-trigger-btn { background: #f4f5f7; color: #303640; border: 1px solid #eceef1; }
+.about-app-banner { background: #f7f8fa; padding-top: 14px; }
+.about-card {
+  border: 1px solid #f0e4dc;
+  border-radius: 17px;
+  background: linear-gradient(110deg,#fffaf6 0%,#fff 100%);
+  box-shadow: 0 2px 10px rgba(30,35,45,.025);
+}
+.about-icon-box { color: #f97316; background: #fff1e7; border-radius: 11px; }
+.about-details h2 { color: #252a32; font-size: 14px; }
+.about-details p { color: #69717d; line-height: 1.55; }
+.badge-item { color: #a94b1a; background: #fff; border: 1px solid #f1e6df; }
+.category-scroll {
+  top: 71px;
+  background: rgba(247,248,250,.97);
+  border-bottom: 1px solid #eceef1;
+}
+.category-tab {
+  border-radius: 999px;
+  padding: 9px 15px;
+  border: 1px solid #e6e9ed;
+  background: #fff;
+  color: #5d6570;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+.category-tab.active {
+  color: #fff;
+  background: #252a32;
+  border-color: #252a32;
+}
+.container { padding-top: 16px; }
+.grid-layout { gap: 13px; }
+.premium-card {
+  border-radius: 16px;
+  border: 1px solid #e9ecf0;
+  background: #fff;
+  box-shadow: 0 2px 9px rgba(28,35,45,.035);
+}
+.img-container { background: #f3f4f6; }
+.tag-stok { border-radius: 7px; font-size: 9px; }
+.info-container { padding: 12px; }
+.item-name { color: #303640; font-size: 12.5px; font-weight: 650; line-height: 1.45; }
+.item-price { color: #24282e; font-size: 14px; font-weight: 800; }
+.btn-round-add {
+  width: 34px; height: 34px; border-radius: 11px;
+  color: #fff; background: #f97316;
+  box-shadow: 0 3px 8px rgba(249,115,22,.16);
+}
+.dock-nav {
+  background: rgba(36,40,46,.97);
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 10px 30px rgba(20,25,35,.18);
+}
+.dock-link.active .material-icons-round { color: #fb923c; }
+.app-header-back { background: #fff; border-bottom-color: #edf0f3; }
+.form-card,.cart-item,.detail-content-card,.detail-main-card-box {
+  background: #fff;
+  border-color: #e9ecf0;
+}
+.form-card h2 { color: #272d35; }
+.form-control { background: #fafbfc; border-color: #e3e6eb; }
+.form-control:focus { border-color: #f97316; box-shadow: 0 0 0 3px rgba(249,115,22,.10); }
+.detail-kategori-pill { background: #fff1e7; color: #bd561b; }
+.detail-harga-tag { color: #e96818; }
+.btn-add-to-cart-modern { background: var(--accent-gradient); }
+.action-bar,.detail-action-bar {
+  background: rgba(255,255,255,.97);
+  border-top-color: #eceef1;
+  box-shadow: 0 -5px 20px rgba(25,32,44,.055);
+}
+.btn-submit-order { border-radius: 12px; }
+.promo-carousel {
+  border-radius: 18px;
+  border-color: #f2e3d9;
+  box-shadow: 0 3px 12px rgba(30,35,45,.035);
+}
+.promo-slide { background: linear-gradient(115deg,#fff8f3 0%,#ffefe5 100%); }
+.promo-kicker { color: #e96818; }
+.promo-cta { background: #f97316; box-shadow: none; border-radius: 10px; }
+.promo-controls { background: #fff5ee; }
+.promo-arrow { color: #e96818; }
+.promo-dots button.active { background: #f97316; }
+@media (min-width: 600px) {
+  .grid-layout { gap: 16px; }
+  .premium-card { border-radius: 17px; }
+}
+@media (max-width: 420px) {
+  .about-card { border-radius: 14px; }
+  .promo-carousel { border-radius: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .premium-card,.btn-round-add,.category-tab { transition: none !important; }
+}
