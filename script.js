@@ -89,6 +89,8 @@ function filterKategori(namaKategori, e) {
 function tampilkanProduk(daftarProduk) {
     const gridProduk = document.getElementById('konten-produk');
     if (!gridProduk) return;
+    const jumlahProduk = document.getElementById('jumlah-produk');
+    if (jumlahProduk) jumlahProduk.textContent = `${(daftarProduk || []).length} produk`;
     gridProduk.innerHTML = ""; 
 
     if (!daftarProduk || daftarProduk.length === 0) {
