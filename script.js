@@ -251,7 +251,6 @@ function renderDetailHalaman(p) {
     if (isHabis) {
         actionBeli.innerHTML = `
             <div class="detail-action-inner">
-                <div class="detail-action-caption"><strong>${hargaFormat}</strong><span>Produk sedang tidak tersedia</span></div>
                 <button class="btn-add-to-cart-modern" type="button" disabled>STOK HABIS</button>
             </div>`;
     } else {
@@ -261,7 +260,6 @@ function renderDetailHalaman(p) {
         };
         actionBeli.innerHTML = `
             <div class="detail-action-inner">
-                <div class="detail-action-caption"><strong>${hargaFormat}</strong><span>Siap untuk dipesan</span></div>
                 <button class="btn-add-to-cart-modern" id="detail-add-cart" type="button">
                     <span>Tambah ke Keranjang</span>
                 </button>
