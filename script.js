@@ -857,17 +857,27 @@ window.addEventListener('storage', perbaruiBadgeKeranjang);
   const track = document.getElementById('promo-track');
   if (!track) return;
   const slides = Array.from(track.children);
+  const prev = document.querySelector('.promo-carousel .promo-prev');
+  const next = document.querySelector('.promo-carousel .promo-next');
   let current = 0;
   let timer;
   const show = (index) => {
     current = (index + slides.length) % slides.length;
     track.style.transform = `translateX(-${current * 100}%)`;
   };
-  const restart = () => { clearInterval(timer); timer = setInterval(() => show(current + 1), 5500); };
-  // Ketuk/klik area foto banner untuk berpindah ke banner berikutnya.
-  // Tombol CTA dan tautan di dalam banner tetap menjalankan fungsinya.
-  track.addEventListener('click', event => {
-    if (event.target.closest('a, button')) return;
+  const restart = () => {
+    clearInterval(timer);
+    timer = setInterval(() => show(current + 1), 5500);
+  };
+  prev?.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
+    show(current - 1);
+    restart();
+  });
+  next?.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
     show(current + 1);
     restart();
   });
