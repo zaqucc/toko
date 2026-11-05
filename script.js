@@ -1,4 +1,9 @@
-const URL_API_GAS = "https://script.google.com/macros/s/AKfycbyz85UvAfDESNLzBvWXmxfafBVGvpg5mG12WghukOnNwIliEliJLyj6qzRXAZRjdrYh/exec";
+const SUPABASE_URL = "https://rulhiqqvsbqsluxguzvs.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_BG8McDp-4A6WSy-P5M_cPA_y2Pg0PcG";
+const SUPABASE_HEADERS = {
+    apikey: SUPABASE_PUBLISHABLE_KEY,
+    Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`
+};
 const NOMOR_WHATSAPP_TOKO = "6285119818675"; // Semua tujuan WhatsApp toko menggunakan nomor ini // Nomor WhatsApp admin toko yang sudah digunakan checkout
 
 /* ONGKIR GRATIS API KEY: OpenStreetMap + OSRM public demo.
@@ -34,7 +39,7 @@ async function ambilDataProduk() {
     try {
         const data = await ambilDataProdukTersimpan();
         semuaProdukGlobal = data.products;
-        inisialisasiKategori(semuaProdukGlobal);
+        inisialisasiKategori(semuaProdukGlobal, data.categories || []);
         tampilkanProduk(semuaProdukGlobal);
         if (data.offline) tampilkanStatusOffline(true);
     } catch (error) {
@@ -44,23 +49,26 @@ async function ambilDataProduk() {
     }
 }
 
-function inisialisasiKategori(daftarProduk) {
+function inisialisasiKategori(daftarProduk, daftarKategori = []) {
     const container = document.getElementById('kategori-container');
     if (!container) return;
 
-    const kategoriSet = new Set();
-    daftarProduk.forEach(p => {
-        if (p.kategori) kategoriSet.add(String(p.kategori).trim());
-    });
+    const kategoriSet = new Set(
+        daftarKategori.map(k => String(k.nama || '').trim()).filter(Boolean)
+    );
+    if (kategoriSet.size === 0) {
+        daftarProduk.forEach(p => {
+            if (p.kategori) kategoriSet.add(String(p.kategori).trim());
+        });
+    }
 
     let htmlButtons = `<button class="category-tab active" onclick="filterKategori('Semua', event)">Semua</button>`;
     kategoriSet.forEach(kat => {
-        htmlButtons += `<button class="category-tab" onclick="filterKategori('${kat}', event)">${kat}</button>`;
+        const aman = kat.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        htmlButtons += `<button class="category-tab" onclick="filterKategori('${aman}', event)">${kat}</button>`;
     });
-
     container.innerHTML = htmlButtons;
 }
-
 function filterKategori(namaKategori, e) {
     const tabs = document.querySelectorAll('.category-tab');
     tabs.forEach(tab => tab.classList.remove('active'));
@@ -651,22 +659,44 @@ document.addEventListener('keydown', function(event) {
 });
 
 
-/* PWA Loji Express: katalog terakhir disimpan di perangkat untuk dibuka offline. */
-const KUNCI_KATALOG_CACHE = 'logiexpress_katalog_cache_v1';
+/* PWA Loji Express — katalog Supabase dan cache offline perangkat. */
+const KUNCI_KATALOG_CACHE = 'logiexpress_katalog_cache_v2';
+
 async function ambilDataProdukTersimpan() {
     try {
-        const respon = await fetch(URL_API_GAS, { cache: 'no-store' });
-        if (!respon.ok) throw new Error('Server katalog tidak merespons.');
-        const data = await respon.json();
-        if (!data.success || !Array.isArray(data.products)) throw new Error(data.message || 'Data katalog tidak valid.');
-        try { localStorage.setItem(KUNCI_KATALOG_CACHE, JSON.stringify({ products: data.products, savedAt: Date.now() })); } catch (e) {}
+        const opsiFetch = { method: 'GET', headers: SUPABASE_HEADERS, cache: 'no-store' };
+        const [resProduk, resKategori] = await Promise.all([
+            fetch(`${SUPABASE_URL}/rest/v1/products?select=id,nama,kategori,harga,stok,deskripsi,foto_1_url,foto_2_url,foto_3_url,aktif,urutan&aktif=eq.true&order=urutan.asc,nama.asc`, opsiFetch),
+            fetch(`${SUPABASE_URL}/rest/v1/categories?select=nama,urutan&aktif=eq.true&order=urutan.asc,nama.asc`, opsiFetch)
+        ]);
+
+        if (!resProduk.ok) throw new Error(`Gagal mengambil produk dari Supabase (HTTP ${resProduk.status}).`);
+        if (!resKategori.ok) throw new Error(`Gagal mengambil kategori dari Supabase (HTTP ${resKategori.status}).`);
+
+        const [products, categories] = await Promise.all([resProduk.json(), resKategori.json()]);
+        if (!Array.isArray(products) || !Array.isArray(categories)) throw new Error('Format katalog Supabase tidak sesuai.');
+
+        const hasil = { products, categories, savedAt: Date.now() };
+        try { localStorage.setItem(KUNCI_KATALOG_CACHE, JSON.stringify(hasil)); } catch (e) {}
         tampilkanStatusOffline(false);
-        return { products: data.products, offline: false };
+        return { ...hasil, offline: false };
     } catch (error) {
-        const tersimpan = localStorage.getItem(KUNCI_KATALOG_CACHE);
-        if (tersimpan) {
-            const cache = JSON.parse(tersimpan);
-            if (cache && Array.isArray(cache.products)) return { products: cache.products, offline: true, savedAt: cache.savedAt };
+        console.error('Supabase katalog:', error);
+        try {
+            const tersimpan = localStorage.getItem(KUNCI_KATALOG_CACHE);
+            if (tersimpan) {
+                const cache = JSON.parse(tersimpan);
+                if (cache && Array.isArray(cache.products)) {
+                    return {
+                        products: cache.products,
+                        categories: Array.isArray(cache.categories) ? cache.categories : [],
+                        offline: true,
+                        savedAt: cache.savedAt
+                    };
+                }
+            }
+        } catch (cacheError) {
+            console.warn('Cache katalog tidak dapat dibaca:', cacheError);
         }
         throw error;
     }
