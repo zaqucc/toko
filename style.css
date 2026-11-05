@@ -1357,8 +1357,8 @@ body { background:#f6f7f9; color:#20252d; letter-spacing:-.15px; }
 .item-price { margin:0; color:#242a33; font-size:13px; font-weight:800; }
 .btn-round-add { width:31px; height:31px; border-radius:9px; background:#f97316; box-shadow:none; }
 .dock-nav {
-  left:50%; bottom:12px; width:min(430px,calc(100% - 28px));
-  box-sizing:border-box; transform:translateX(-50%);
+  left:14px; right:14px; bottom:12px; width:auto; max-width:430px;
+  margin:0 auto; box-sizing:border-box; transform:none;
   padding:9px 12px calc(9px + env(safe-area-inset-bottom));
   border:1px solid rgba(255,255,255,.12); border-radius:17px;
   background:#252b34; box-shadow:0 12px 34px rgba(25,32,44,.22);
