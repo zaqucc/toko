@@ -1,0 +1,57 @@
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const SUPABASE_URL = 'https://rulhiqqvsbqsluxguzvs.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_BG8McDp-4A6WSy-P5M_cPA_y2Pg0PcG';
+const db = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const $ = (id) => document.getElementById(id);
+const rupiah = (v) => new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(v)||0);
+const safe = (v='') => String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const statusNames = {menunggu:'Menunggu',dikonfirmasi:'Dikonfirmasi',diproses:'Diproses',dikirim:'Dikirim',selesai:'Selesai',dibatalkan:'Dibatalkan'};
+let currentAdmin = null;
+let categoryCache = [];
+
+function notice(message, error=false){$('app-message').textContent=message;$('app-message').style.color=error?'#d04435':'#027a48';}
+function loginNotice(message){$('login-message').textContent=message;}
+async function start(){
+ const {data:{session}}=await db.auth.getSession();
+ if(session) await showApp();
+}
+async function showApp(){
+ const {data:{user}}=await db.auth.getUser();
+ if(!user){$('login-view').hidden=false;return;}
+ const {data:admin,error}=await db.from('admin_users').select('nama,aktif').eq('user_id',user.id).maybeSingle();
+ if(error||!admin||!admin.aktif){await db.auth.signOut();$('login-view').hidden=false;loginNotice('Akun ini tidak memiliki akses administrator aktif.');return;}
+ currentAdmin=admin;$('login-view').hidden=true;$('app-view').hidden=false;$('admin-name').textContent=admin.nama||user.email||'Administrator';
+ await loadOverview();
+}
+$('login-form').addEventListener('submit',async e=>{e.preventDefault();loginNotice('Memeriksa akun...');const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){loginNotice('Login gagal. Periksa email dan password.');return;}loginNotice('');await showApp();});
+$('logout-btn').addEventListener('click',async()=>{await db.auth.signOut();location.reload();});
+$('side-nav').addEventListener('click',e=>{const b=e.target.closest('[data-page]');if(!b)return;document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.page').forEach(x=>x.hidden=x.id!=='page-'+b.dataset.page);$('page-title').textContent=b.textContent.trim();if(b.dataset.page==='products')loadProducts();if(b.dataset.page==='categories')loadCategories();if(b.dataset.page==='orders')loadOrders();});
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.close).close()));
+async function loadOverview(){
+ const queries=await Promise.all([db.from('products').select('id',{count:'exact',head:true}).eq('aktif',true),db.from('categories').select('id',{count:'exact',head:true}).eq('aktif',true),db.from('orders').select('id,status',{count:'exact'}),db.from('orders').select('id',{count:'exact',head:true}).eq('status','menunggu')]);
+ if(queries.some(x=>x.error)){notice('Sebagian ringkasan tidak dapat dimuat. Periksa koneksi dan kebijakan database.',true);return;}
+ $('stat-products').textContent=queries[0].count??0;$('stat-categories').textContent=queries[1].count??0;$('stat-orders').textContent=queries[2].count??0;$('stat-pending').textContent=queries[3].count??0;
+}
+async function loadCategories(){
+ const {data,error}=await db.from('categories').select('*').order('urutan').order('nama');
+ if(error){notice('Gagal memuat kategori: '+error.message,true);return;}
+ categoryCache=data||[];$('categories-body').innerHTML=categoryCache.map(c=>`<tr><td><strong>${safe(c.nama)}</strong></td><td>${c.urutan}</td><td><span class="pill ${c.aktif?'':'off'}">${c.aktif?'Aktif':'Nonaktif'}</span></td><td><div class="table-actions"><button class="icon-btn" data-edit-category="${c.id}" title="Edit"><span class="material-icons-round">edit</span></button><button class="icon-btn danger" data-delete-category="${c.id}" title="Hapus"><span class="material-icons-round">delete</span></button></div></td></tr>`).join('')||'<tr><td colspan="4">Belum ada kategori.</td></tr>';
+ $('category-options').innerHTML=categoryCache.map(c=>`<option value="${safe(c.nama)}"></option>`).join('');
+}
+$('add-category').addEventListener('click',()=>{ $('category-form').reset();$('category-id').value='';$('category-dialog-title').textContent='Tambah kategori';$('category-active').checked=true;$('category-dialog').showModal();});
+$('categories-body').addEventListener('click',async e=>{const edit=e.target.closest('[data-edit-category]');const del=e.target.closest('[data-delete-category]');if(edit){const c=categoryCache.find(x=>x.id===edit.dataset.editCategory);if(!c)return;$('category-id').value=c.id;$('category-name').value=c.nama;$('category-order').value=c.urutan;$('category-active').checked=c.aktif;$('category-dialog-title').textContent='Edit kategori';$('category-dialog').showModal();}if(del){if(!confirm('Hapus kategori ini? Produk yang sudah memakai nama kategori tidak ikut dihapus.'))return;const {error}=await db.from('categories').delete().eq('id',del.dataset.deleteCategory);if(error)notice(error.message,true);else{notice('Kategori dihapus.');await loadCategories();await loadOverview();}}});
+$('category-form').addEventListener('submit',async e=>{e.preventDefault();const id=$('category-id').value;const row={nama:$('category-name').value.trim(),urutan:Number($('category-order').value)||0,aktif:$('category-active').checked};const q=id?db.from('categories').update(row).eq('id',id):db.from('categories').insert(row);const {error}=await q;if(error){notice('Gagal menyimpan kategori: '+error.message,true);return;}$('category-dialog').close();notice('Kategori tersimpan.');await loadCategories();await loadOverview();});
+let productCache=[];
+async function loadProducts(){const {data,error}=await db.from('products').select('*').order('urutan').order('nama');if(error){notice('Gagal memuat produk: '+error.message,true);return;}productCache=data||[];$('products-body').innerHTML=productCache.map(p=>`<tr><td><div class="product-cell">${p.foto_1_url?'<img src="'+safe(p.foto_1_url)+'" alt="">':'<img src="" alt="">'}<span>${safe(p.nama)}</span></div></td><td>${safe(p.kategori||'—')}</td><td>${rupiah(p.harga)}</td><td>${p.stok}</td><td><span class="pill ${p.aktif?'':'off'}">${p.aktif?'Aktif':'Nonaktif'}</span></td><td><div class="table-actions"><button class="icon-btn" data-edit-product="${safe(p.id)}" title="Edit"><span class="material-icons-round">edit</span></button><button class="icon-btn danger" data-delete-product="${safe(p.id)}" title="Hapus"><span class="material-icons-round">delete</span></button></div></td></tr>`).join('')||'<tr><td colspan="6">Belum ada produk.</td></tr>';await loadCategories();}
+$('add-product').addEventListener('click',()=>openProduct());
+function openProduct(p=null){$('product-form').reset();$('product-id').value=p?.id||'';$('product-dialog-title').textContent=p?'Edit produk':'Tambah produk';$('product-name').value=p?.nama||'';$('product-category').value=p?.kategori||'';$('product-price').value=p?.harga??'';$('product-stock').value=p?.stok??0;$('product-order').value=p?.urutan??0;$('product-description').value=p?.deskripsi||'';$('product-active').checked=p?.aktif??true;$('product-dialog').showModal();}
+$('products-body').addEventListener('click',async e=>{const edit=e.target.closest('[data-edit-product]');const del=e.target.closest('[data-delete-product]');if(edit){openProduct(productCache.find(p=>p.id===edit.dataset.editProduct));}if(del){if(!confirm('Hapus produk ini secara permanen?'))return;const {error}=await db.from('products').delete().eq('id',del.dataset.deleteProduct);if(error)notice(error.message,true);else{notice('Produk dihapus.');await loadProducts();await loadOverview();}}});
+$('product-form').addEventListener('submit',async e=>{e.preventDefault();const id=$('product-id').value;const row={nama:$('product-name').value.trim(),kategori:$('product-category').value.trim()||null,harga:Number($('product-price').value),stok:Number($('product-stock').value),urutan:Number($('product-order').value)||0,deskripsi:$('product-description').value.trim(),aktif:$('product-active').checked,updated_at:new Date().toISOString()};const file=$('product-image').files[0];if(file){if(!file.type.startsWith('image/')){notice('File harus berupa gambar.',true);return;}if(file.size>5*1024*1024){notice('Ukuran gambar maksimal 5 MB.',true);return;}const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');const path='products/'+crypto.randomUUID()+'.'+ext;const {error:uploadError}=await db.storage.from('product-images').upload(path,file,{upsert:false,contentType:file.type});if(uploadError){notice('Upload foto gagal: '+uploadError.message,true);return;}row.foto_1_url=db.storage.from('product-images').getPublicUrl(path).data.publicUrl;}
+const q=id?db.from('products').update(row).eq('id',id):db.from('products').insert(row);const {error}=await q;if(error){notice('Gagal menyimpan produk: '+error.message,true);return;}$('product-dialog').close();notice('Produk berhasil disimpan.');await loadProducts();await loadOverview();});
+let orderCache=[];
+async function loadOrders(){const {data,error}=await db.from('orders').select('*').order('created_at',{ascending:false}).limit(100);if(error){notice('Gagal memuat pesanan: '+error.message,true);return;}orderCache=data||[];$('orders-body').innerHTML=orderCache.map(o=>`<tr><td><strong>${safe(o.nomor_pesanan)}</strong></td><td>${safe(o.nama_pelanggan)}</td><td>${rupiah(o.total)}</td><td>${new Date(o.created_at).toLocaleDateString('id-ID')}</td><td><select class="status-select" data-status-order="${o.id}">${Object.entries(statusNames).map(([v,n])=>'<option value="'+v+'" '+(o.status===v?'selected':'')+'>'+n+'</option>').join('')}</select></td><td><button class="icon-btn" data-view-order="${o.id}" title="Detail"><span class="material-icons-round">visibility</span></button></td></tr>`).join('')||'<tr><td colspan="6">Belum ada pesanan.</td></tr>';}
+$('refresh-orders').addEventListener('click',loadOrders);
+$('orders-body').addEventListener('change',async e=>{const s=e.target.closest('[data-status-order]');if(!s)return;const {error}=await db.from('orders').update({status:s.value,updated_at:new Date().toISOString()}).eq('id',s.dataset.statusOrder);if(error){notice('Status gagal diperbarui: '+error.message,true);await loadOrders();}else{notice('Status pesanan diperbarui.');await loadOverview();}});
+$('orders-body').addEventListener('click',async e=>{const b=e.target.closest('[data-view-order]');if(!b)return;const o=orderCache.find(x=>x.id===b.dataset.viewOrder);if(!o)return;const {data:items,error}=await db.from('order_items').select('*').eq('order_id',o.id);if(error){notice(error.message,true);return;}$('order-detail').innerHTML='<div class="order-info"><div>Nomor pesanan<br><strong>'+safe(o.nomor_pesanan)+'</strong></div><div>Pelanggan<br><strong>'+safe(o.nama_pelanggan)+' · '+safe(o.telepon_pelanggan||'—')+'</strong></div><div>Alamat<br><strong>'+safe(o.alamat_pengiriman)+'</strong></div><div>Total<br><strong>'+rupiah(o.total)+'</strong></div></div><div class="order-items">'+(items||[]).map(i=>'<div><span>'+safe(i.nama_produk)+' × '+i.jumlah+'</span><strong>'+rupiah(i.subtotal)+'</strong></div>').join('')+'</div>';$('order-dialog').showModal();});
+start().catch(e=>{loginNotice('Tidak dapat memulai dashboard: '+e.message);});
