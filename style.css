@@ -3557,5 +3557,20 @@ body.cart-page .btn-submit-order {
   justify-content: center !important;
   gap: 0 !important;
 }
-.promo-controls .promo-arrow { display: none !important; }
 .promo-dots { justify-content: center; margin: 0 auto; }
+
+/* Final button polish: consistent icon controls and modal typography */
+.btn-back,
+.btn-back-floating {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-back .material-icons-round,
+.btn-back-floating .material-icons-round { font-size: 20px; }
+.cart-item button { font-size: 14px !important; }
+.wa-btn-secondary { font-size: 12px !important; font-weight: 650 !important; }
+.promo-controls .promo-arrow { color: #F45B20; }
