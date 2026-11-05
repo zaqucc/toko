@@ -700,11 +700,11 @@ function klikLuarPopupPesan(event) {
 function lanjutKeWhatsApp() {
     if (!dataPesananWhatsApp) return;
     const { keranjang, nama, alamat, total } = dataPesananWhatsApp;
-    const rincianItem = keranjang.map(item => `${item.nama} (${item.jumlah}x)`).join('\\n');
-    const teksPesan = `Halo Admin Loji Express, saya ingin memesan:\\n\\n` +
-        `*DATA PENERIMA*\\nNama: ${nama}\\nAlamat: ${alamat}\\n\\n` +
-        `*PESANAN*\\n${rincianItem}\\n\\n` +
-        `*TOTAL PEMBAYARAN*\\n${rupiah(total)} (termasuk ongkir)\\n\\n` +
+    const rincianItem = keranjang.map(item => `${item.nama} (${item.jumlah}x)`).join('\n');
+    const teksPesan = `Halo Admin Loji Express, saya ingin memesan:\n\n` +
+        `*DATA PENERIMA*\nNama: ${nama}\nAlamat: ${alamat}\n\n` +
+        `*PESANAN*\n${rincianItem}\n\n` +
+        `*TOTAL PEMBAYARAN*\n${rupiah(total)} (termasuk ongkir)\n\n` +
         `Mohon segera diproses. Terima kasih!`;
     const urlWhatsApp = `https://wa.me/${NOMOR_WHATSAPP_TOKO}?text=${encodeURIComponent(teksPesan)}`;
     const tabWhatsApp = window.open(urlWhatsApp, '_blank');
