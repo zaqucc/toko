@@ -2354,3 +2354,144 @@ body { background: #f8f5f1; color: #302d2a; }
   .marketplace-product-grid .premium-card { border-radius: 14px; }
   .marketplace-product-grid .info-container { padding: 8px; }
 }
+
+
+/* LOJI EXPRESS — Warm & Elegant redesign, November 2026 */
+:root {
+  --bg-soft: #f8f5f1;
+  --accent-orange: #e96845;
+  --accent-gradient: linear-gradient(135deg,#f28b63 0%,#df5b3b 100%);
+  --text-dark: #332e2a;
+  --text-gray: #82766d;
+}
+html { scroll-behavior: smooth; }
+body { background: #f8f5f1; color: #332e2a; }
+.market-header {
+  background: rgba(255,253,250,.97);
+  border-bottom: 1px solid #f0e7df;
+  box-shadow: 0 4px 20px rgba(72,49,35,.045);
+}
+.market-brand { color:#342e2a; }
+.market-brand-logo { border-radius:12px; }
+.market-delivery { color:#81746b; }
+.market-delivery .material-icons-round { color:#e96845; }
+.market-search-trigger {
+  min-height:46px; border:1px solid #eee3da; border-radius:15px;
+  background:#fff; box-shadow:0 3px 12px rgba(67,47,34,.045);
+}
+.market-search-trigger .material-icons-round { color:#e96845; }
+.market-cart-shortcut {
+  border:1px solid #f0e2d9; border-radius:14px;
+  background:#fff4ed; color:#df6241;
+}
+.promo-carousel {
+  margin:16px auto 20px; width:calc(100% - 32px); max-width:1120px;
+  border:1px solid #f0e5dc; border-radius:22px; overflow:hidden;
+  background:#fff; box-shadow:0 10px 28px rgba(76,51,35,.09);
+}
+.promo-slide {
+  position:relative; min-height:clamp(220px,28vw,340px);
+  padding:clamp(22px,4vw,46px); gap:20px;
+  background:#eee4d9; isolation:isolate;
+}
+.promo-slide::before {
+  content:""; position:absolute; inset:0; z-index:0;
+  background:linear-gradient(90deg,rgba(35,29,25,.82) 0%,rgba(35,29,25,.56) 48%,rgba(35,29,25,.08) 100%);
+}
+.promo-copy { position:relative; z-index:2; flex:1 1 52%; max-width:510px; }
+.promo-kicker { color:#ffd0b9; font-size:10px; letter-spacing:1.7px; margin-bottom:12px; }
+.promo-copy h2 {
+  max-width:470px; color:#fff; font-size:clamp(23px,4vw,39px);
+  line-height:1.12; letter-spacing:-1px; margin-bottom:10px;
+}
+.promo-copy p { max-width:390px; color:rgba(255,255,255,.88); font-size:clamp(12px,1.4vw,15px); line-height:1.65; }
+.promo-cta {
+  background:#e96845; border-radius:999px; padding:11px 17px;
+  box-shadow:0 5px 15px rgba(20,15,12,.2); font-size:12px;
+}
+.promo-slide img {
+  position:absolute; inset:0 0 0 auto; z-index:-1;
+  width:62%; height:100%; max-width:none; max-height:none;
+  object-fit:cover; object-position:center; opacity:1;
+  mix-blend-mode:normal;
+}
+.promo-controls { height:38px; gap:12px; background:#fffaf6; padding-bottom:0; }
+.promo-arrow { width:25px; height:25px; flex-basis:25px; color:#df6241; border:1px solid #f0e3da; }
+.promo-dots button { background:#e9c9ba; }
+.promo-dots button.active { background:#e96845; }
+.category-scroll {
+  max-width:1120px; margin:0 auto; padding:12px 16px 15px;
+  background:transparent; border:0; gap:9px;
+}
+.category-tab {
+  min-height:37px; padding:0 16px; border:1px solid #eee3da;
+  border-radius:999px; background:#fff; color:#786c63;
+  box-shadow:0 2px 8px rgba(75,53,39,.035);
+}
+.category-tab.active { background:#e96845; border-color:#e96845; color:#fff; box-shadow:0 4px 12px rgba(233,104,69,.2); }
+.catalog-container { max-width:1120px; padding-top:16px; }
+.marketplace-catalog-heading { margin:0 0 16px; align-items:flex-end; }
+.marketplace-eyebrow { color:#df7956; letter-spacing:1.5px; }
+.marketplace-catalog-heading h2 { color:#332e2a; letter-spacing:-.6px; }
+.marketplace-product-count { border-radius:999px; padding:6px 10px; background:#fff; color:#857970; }
+.marketplace-product-grid {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px; align-items:stretch; grid-auto-rows:1fr;
+}
+.marketplace-product-grid .premium-card {
+  display:flex; flex-direction:column; min-width:0; height:100%;
+  overflow:hidden; border:1px solid #eee6df; border-radius:17px;
+  background:#fff; box-shadow:0 3px 13px rgba(72,49,35,.05);
+}
+.marketplace-product-grid .img-container { background:#fbf8f5; aspect-ratio:1/1; }
+.marketplace-product-grid .premium-img { width:100%; height:100%; padding:8px; object-fit:contain; }
+.marketplace-product-grid .tag-stok { top:9px; left:9px; border-radius:999px; padding:4px 8px; }
+.marketplace-product-grid .info-container {
+  display:flex; flex:1 1 auto; flex-direction:column; justify-content:space-between;
+  min-height:104px; gap:9px; padding:11px;
+}
+.marketplace-product-grid .item-name {
+  min-height:2.8em; max-height:2.8em; color:#39332f;
+  font-size:11px; line-height:1.45; font-weight:600;
+}
+.marketplace-product-grid .price-action-row {
+  min-height:32px; display:flex; align-items:center; justify-content:space-between;
+  gap:7px; margin-top:auto;
+}
+.marketplace-product-grid .item-price { color:#e45f3d; font-size:13px; font-weight:800; }
+.marketplace-product-grid .btn-round-add {
+  width:32px; height:32px; flex:0 0 32px; border-radius:11px;
+  background:#fff0e9; color:#df6241;
+}
+.marketplace-dock-nav {
+  width:min(430px,calc(100% - 28px)); height:68px;
+  bottom:calc(12px + env(safe-area-inset-bottom)); padding:7px 9px;
+  border:1px solid rgba(240,230,222,.96); border-radius:22px;
+  background:rgba(255,255,255,.96); box-shadow:0 10px 32px rgba(63,44,32,.15);
+}
+.marketplace-dock-nav .dock-link { border-radius:15px; }
+.marketplace-dock-nav .dock-link.active { background:#fff1ea; color:#df6241; }
+.marketplace-dock-nav .dock-link.active .dock-icon-wrap { background:#ffe2d5; }
+@media(min-width:600px) {
+  .marketplace-product-grid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:15px; }
+  .marketplace-product-grid .premium-card { border-radius:19px; }
+  .marketplace-product-grid .info-container { min-height:112px; padding:13px; }
+}
+@media(max-width:420px) {
+  .promo-carousel { width:calc(100% - 22px); margin:12px auto 16px; border-radius:18px; }
+  .promo-slide { min-height:205px; padding:18px 15px; }
+  .promo-slide::before { background:linear-gradient(90deg,rgba(35,29,25,.84) 0%,rgba(35,29,25,.62) 60%,rgba(35,29,25,.2) 100%); }
+  .promo-slide img { width:75%; }
+  .promo-copy { flex-basis:72%; }
+  .promo-copy h2 { font-size:22px; }
+  .promo-copy p { font-size:11px; max-width:225px; }
+  .marketplace-product-grid { gap:9px; }
+  .marketplace-product-grid .premium-card { border-radius:14px; }
+  .marketplace-product-grid .info-container { min-height:100px; padding:9px; }
+  .marketplace-product-grid .item-name { font-size:10px; }
+  .marketplace-product-grid .item-price { font-size:12px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  html { scroll-behavior:auto; }
+  .promo-track { transition:none; }
+}
