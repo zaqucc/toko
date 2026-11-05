@@ -2495,3 +2495,30 @@ body { background: #f8f5f1; color: #332e2a; }
   html { scroll-behavior:auto; }
   .promo-track { transition:none; }
 }
+
+
+/* PRODUCT PHOTO — show the complete original image, never crop into a square */
+.marketplace-product-grid .img-container {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  aspect-ratio: auto !important;
+  padding: 0 !important;
+  overflow: hidden;
+  background: #fff;
+}
+.marketplace-product-grid .img-container .premium-img {
+  position: static !important;
+  inset: auto !important;
+  display: block;
+  width: 100%;
+  height: auto !important;
+  max-height: none !important;
+  aspect-ratio: auto !important;
+  object-fit: contain !important;
+  object-position: center;
+  padding: 0 !important;
+  mix-blend-mode: normal;
+}
