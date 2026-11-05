@@ -90,18 +90,25 @@
         </div>
     </main>
 
-    <nav class="dock-nav">
-        <a href="index.html" class="dock-link active">
-            <span class="material-icons-round">local_mall</span>
-            Belanja
+    <nav class="dock-nav marketplace-dock-nav" aria-label="Navigasi utama">
+        <a href="index.html" class="dock-link active" aria-current="page">
+            <span class="dock-icon-wrap"><span class="material-icons-round">home</span></span>
+            <span class="dock-link-label">Beranda</span>
         </a>
-        <a href="order.html" class="dock-link">
-            <span class="material-icons-round">shopping_bag</span>
-            Keranjang
+        <button type="button" class="dock-link" onclick="scrollKeKategori()" aria-label="Lihat kategori produk">
+            <span class="dock-icon-wrap"><span class="material-icons-round">grid_view</span></span>
+            <span class="dock-link-label">Kategori</span>
+        </button>
+        <a href="order.html" class="dock-link dock-cart-link">
+            <span class="dock-icon-wrap">
+                <span class="material-icons-round">shopping_cart</span>
+                <span class="dock-cart-badge" id="cart-count-badge" hidden>0</span>
+            </span>
+            <span class="dock-link-label">Keranjang</span>
         </a>
         <button type="button" class="dock-link dock-help-button" onclick="bukaPusatBantuan()" aria-haspopup="dialog" aria-controls="help-center-overlay">
-            <span class="material-icons-round">support_agent</span>
-            Bantuan
+            <span class="dock-icon-wrap"><span class="material-icons-round">apps</span></span>
+            <span class="dock-link-label">Lainnya</span>
         </button>
     </nav>
 
