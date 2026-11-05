@@ -163,82 +163,113 @@ function renderDetailHalaman(p) {
     const container = document.getElementById('detail-container');
     if (!container) return;
 
-    const hargaFormat = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p.harga || 0);
-    const stokVal = Number(p.stok) || 0;
-    const isHabis = stokVal <= 0 || p.aktif === false || p.aktif === "FALSE" || p.aktif === "False";
+    const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[char]));
+    const hargaFormat = new Intl.NumberFormat('id-ID', {
+        style: 'currency', currency: 'IDR', minimumFractionDigits: 0
+    }).format(Number(p.harga) || 0);
+    const stokVal = Math.max(0, Number(p.stok) || 0);
+    const isHabis = stokVal <= 0 || p.aktif === false ||
+        String(p.aktif).toUpperCase() === 'FALSE';
+    const fotoFallback = 'https://via.placeholder.com/800x800?text=Foto+Produk';
+    const listFoto = [p.foto_1_url, p.foto_2_url, p.foto_3_url]
+        .filter(url => typeof url === 'string' && url.trim())
+        .slice(0, 3);
+    if (!listFoto.length) listFoto.push(fotoFallback);
 
-    let listFoto = [];
-    if (p.foto_1_url) listFoto.push(p.foto_1_url);
-    if (p.foto_2_url) listFoto.push(p.foto_2_url);
-    if (p.foto_3_url) listFoto.push(p.foto_3_url);
-    if (listFoto.length === 0) listFoto.push('https://via.placeholder.com/400');
+    const nama = escapeHTML(p.nama || 'Tanpa Nama');
+    const kategori = escapeHTML(p.kategori || 'Umum');
+    const deskripsi = escapeHTML(p.deskripsi || 'Informasi produk akan segera diperbarui.');
+    const fotoUtama = escapeHTML(listFoto[0]);
+    const statusText = isHabis ? 'Stok habis' : `Tersedia · ${stokVal} pcs`;
 
-    let htmlThumbnails = "";
-    if (listFoto.length > 1) {
-        htmlThumbnails = `<div class="thumbnail-row-clean">`;
-        listFoto.forEach((url, idx) => {
-            htmlThumbnails += `<img src="${url}" class="thumb-clean ${idx === 0 ? 'active-thumb' : ''}" onclick="gantiFotoUtama('${url}', this)">`;
-        });
-        htmlThumbnails += `</div>`;
-    }
+    const thumbnails = listFoto.length > 1 ? `
+        <div class="detail-gallery-thumbs" aria-label="Pilih foto produk">
+            ${listFoto.map((url, index) => `
+                <button class="detail-thumb ${index === 0 ? 'is-active' : ''}" type="button"
+                    data-photo-index="${index}" aria-label="Lihat foto ${index + 1}"
+                    aria-pressed="${index === 0 ? 'true' : 'false'}">
+                    <img src="${escapeHTML(url)}" alt="" loading="lazy">
+                </button>
+            `).join('')}
+        </div>` : '';
 
     container.innerHTML = `
-        <div class="detail-image-card-container">
-            <div class="detail-main-card-box">
-                <img src="${listFoto[0]}" id="foto-utama" class="main-img-medium" alt="${p.nama}">
-                ${htmlThumbnails}
-            </div>
-        </div>
-
-        <div class="detail-content-card">
-            <div class="detail-badge-row">
-                <span class="detail-kategori-pill">${p.kategori || 'Umum'}</span>
-                <span style="font-size: 12px; font-weight: 700; color: ${isHabis ? '#ef4444' : '#16a34a'};">
-                    ${isHabis ? '● Stok Habis' : '● Ready ' + stokVal + ' pcs'}
-                </span>
+        <section class="detail-page-wrap">
+            <div class="detail-gallery">
+                <div class="detail-main-photo">
+                    <img src="${fotoUtama}" id="foto-utama" class="main-img-medium"
+                        alt="${nama}" fetchpriority="high">
+                    <span class="detail-photo-count">${listFoto.length} foto</span>
+                </div>
+                ${thumbnails}
             </div>
 
-            <h1 class="detail-nama" style="font-size: 19px; font-weight: 800; color: var(--text-dark); margin: 0 0 8px 0;">${p.nama || 'Tanpa Nama'}</h1>
-            <div class="detail-harga-tag">${hargaFormat}</div>
+            <section class="detail-content-card">
+                <div class="detail-badge-row">
+                    <span class="detail-kategori-pill">${kategori}</span>
+                    <span class="detail-stock ${isHabis ? 'is-empty' : 'is-ready'}">
+                        <span class="detail-stock-dot"></span>${statusText}
+                    </span>
+                </div>
 
-            <div class="detail-meta-grid">
-                <div class="meta-box">
-                    <span class="meta-label">ID SKU</span>
-                    <span class="meta-val">#${p.id}</span>
-                </div>
-                <div class="meta-box">
-                    <span class="meta-label">Status Produk</span>
-                    <span class="meta-val">${p.aktif !== false && p.aktif !== "FALSE" ? 'Aktif Jual' : 'Non-Aktif'}</span>
-                </div>
-                <div class="meta-box">
-                    <span class="meta-label">Urutan Katalog</span>
-                    <span class="meta-val">${p.urutan || '-'}</span>
-                </div>
-                <div class="meta-box">
-                    <span class="meta-label">Kategori</span>
-                    <span class="meta-val">${p.kategori || 'Umum'}</span>
-                </div>
-            </div>
+                <h1 class="detail-nama">${nama}</h1>
+                <p class="detail-price-label">Harga produk</p>
+                <div class="detail-harga-tag">${hargaFormat}</div>
 
-            <div class="detail-deskripsi-box">
-                <h3>Deskripsi Produk</h3>
-                <p>${p.deskripsi || 'Tidak ada deskripsi rinci untuk produk ini.'}</p>
-            </div>
-        </div>
+                <div class="detail-info-divider"></div>
+                <div class="detail-deskripsi-box">
+                    <h2>Deskripsi produk</h2>
+                    <p>${deskripsi}</p>
+                </div>
+            </section>
+
+            <p class="detail-assurance">
+                <span class="material-icons-round">verified_user</span>
+                Belanja praktis dan mudah di Loji Express
+            </p>
+        </section>
     `;
 
+    const mainPhoto = document.getElementById('foto-utama');
+    container.querySelectorAll('[data-photo-index]').forEach(button => {
+        button.addEventListener('click', () => {
+            const index = Number(button.dataset.photoIndex);
+            if (!listFoto[index] || !mainPhoto) return;
+            mainPhoto.src = listFoto[index];
+            container.querySelectorAll('.detail-thumb').forEach(thumb => {
+                const active = thumb === button;
+                thumb.classList.toggle('is-active', active);
+                thumb.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+        });
+    });
+
     const actionBeli = document.getElementById('action-beli-container');
-    if (actionBeli) {
-        if (isHabis) {
-            actionBeli.innerHTML = `<button class="btn-add-to-cart-modern" style="background:#cbd5e1; cursor:not-allowed; box-shadow:none;" disabled>STOK HABIS</button>`;
-        } else {
-            actionBeli.innerHTML = `
-                <button class="btn-add-to-cart-modern" onclick='tambahKeKeranjang({id: "${p.id}", nama: "${p.nama}", harga: ${p.harga}, stok: ${p.stok}, foto: "${listFoto[0]}"})'>
+    if (!actionBeli) return;
+    if (isHabis) {
+        actionBeli.innerHTML = `
+            <div class="detail-action-inner">
+                <div class="detail-action-caption"><strong>${hargaFormat}</strong><span>Produk sedang tidak tersedia</span></div>
+                <button class="btn-add-to-cart-modern" type="button" disabled>STOK HABIS</button>
+            </div>`;
+    } else {
+        const productForCart = {
+            id: p.id, nama: p.nama || 'Tanpa Nama', harga: Number(p.harga) || 0,
+            stok: stokVal, foto: listFoto[0]
+        };
+        actionBeli.innerHTML = `
+            <div class="detail-action-inner">
+                <div class="detail-action-caption"><strong>${hargaFormat}</strong><span>Siap untuk dipesan</span></div>
+                <button class="btn-add-to-cart-modern" id="detail-add-cart" type="button">
                     <span class="material-icons-round">add_shopping_cart</span>
-                    <span>TAMBAH KE KERANJANG</span>
+                    <span>Tambah ke Keranjang</span>
                 </button>
-            `;
-        }
+            </div>`;
+        document.getElementById('detail-add-cart')?.addEventListener('click', () => {
+            tambahKeKeranjang(productForCart);
+        });
     }
 }
 
