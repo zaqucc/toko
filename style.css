@@ -3606,3 +3606,31 @@ body.cart-page .app-header-back h1 {
   font-weight: 750 !important;
   letter-spacing: -.25px;
 }
+
+
+/* HEADER TITLES — true horizontal centering on both pages */
+.detail-top-nav {
+  display: grid !important;
+  grid-template-columns: 1fr;
+  place-items: center;
+  text-align: center;
+}
+.detail-top-nav .detail-nav-title {
+  width: auto !important;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center !important;
+  justify-self: center;
+}
+body.cart-page .app-header-back {
+  display: grid !important;
+  grid-template-columns: 1fr;
+  place-items: center;
+  text-align: center;
+}
+body.cart-page .app-header-back h1 {
+  width: 100%;
+  margin: 0;
+  text-align: center !important;
+  justify-self: center;
+}
