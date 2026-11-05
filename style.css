@@ -2970,3 +2970,17 @@ body { background: #f8f5f1; color: #332e2a; }
 @media (prefers-reduced-motion: reduce) {
   .category-tab { transition: none; }
 }
+
+
+/* Category separator follows the clean header divider */
+.category-scroll {
+  isolation: auto;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eceef2;
+  box-shadow: 0 2px 10px rgba(24,32,44,.025);
+  background: #fff;
+}
+.category-scroll::after {
+  content: none;
+  display: none;
+}
