@@ -699,18 +699,13 @@ function klikLuarPopupPesan(event) {
 
 function lanjutKeWhatsApp() {
     if (!dataPesananWhatsApp) return;
-    const { keranjang, nama, alamat, subtotal, ongkir, total, jarakTeks, jarakDibulatkan, tujuanLat, tujuanLng } = dataPesananWhatsApp;
-    const rincianItem = keranjang.map((item, index) => {
-        const nilaiItem = (Number(item.harga) || 0) * (Number(item.jumlah) || 0);
-        return `${index + 1}. ${item.nama} (${item.jumlah}x) - ${rupiah(nilaiItem)}`;
-    }).join('\n');
-    const teksPesan = `Halo Admin Loji Express, saya ingin memesan:\n\n` +
-        `DATA PENERIMA\nNama: ${nama}\nAlamat: ${alamat}\nLokasi GPS pelanggan: https://www.google.com/maps?q=${tujuanLat},${tujuanLng}\nKoordinat tujuan: ${tujuanLat.toFixed(6)}, ${tujuanLng.toFixed(6)}\n\n` +
-        `RINCIAN PESANAN\n${rincianItem}\n\n` +
-        `Subtotal produk: ${rupiah(subtotal)}\n` +
-        `Jarak berkendara: ${jarakTeks} (tarif dihitung untuk ${jarakDibulatkan} km)\n` +
-        `Ongkir: ${rupiah(ongkir)}\n` +
-        `TOTAL PEMBAYARAN: ${rupiah(total)}\n\nMohon segera diproses ya kak. Terima kasih!`;
+    const { keranjang, nama, alamat, total } = dataPesananWhatsApp;
+    const rincianItem = keranjang.map(item => `${item.nama} (${item.jumlah}x)`).join('\\n');
+    const teksPesan = `Halo Admin Loji Express, saya ingin memesan:\\n\\n` +
+        `*DATA PENERIMA*\\nNama: ${nama}\\nAlamat: ${alamat}\\n\\n` +
+        `*PESANAN*\\n${rincianItem}\\n\\n` +
+        `*TOTAL PEMBAYARAN*\\n${rupiah(total)} (termasuk ongkir)\\n\\n` +
+        `Mohon segera diproses. Terima kasih!`;
     const urlWhatsApp = `https://wa.me/${NOMOR_WHATSAPP_TOKO}?text=${encodeURIComponent(teksPesan)}`;
     const tabWhatsApp = window.open(urlWhatsApp, '_blank');
 
