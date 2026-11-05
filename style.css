@@ -3673,3 +3673,10 @@ body.cart-page .app-header-back h1 {
   padding: 0;
   border-radius: 999px;
 }
+
+
+/* Banner tanpa tombol navigasi: seluruh foto tetap penuh dan area foto dapat diketuk. */
+.promo-carousel .promo-controls { display: none !important; }
+.promo-carousel .promo-track { cursor: pointer; touch-action: pan-y; }
+.promo-carousel .promo-slide { cursor: pointer; }
+.promo-carousel .promo-cta { cursor: pointer; }
