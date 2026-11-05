@@ -857,18 +857,20 @@ window.addEventListener('storage', perbaruiBadgeKeranjang);
   const track = document.getElementById('promo-track');
   if (!track) return;
   const slides = Array.from(track.children);
-  const dots = Array.from(document.querySelectorAll('#promo-dots button'));
   let current = 0;
   let timer;
   const show = (index) => {
     current = (index + slides.length) % slides.length;
     track.style.transform = `translateX(-${current * 100}%)`;
-    dots.forEach((dot, i) => { dot.classList.toggle('active', i === current); dot.setAttribute('aria-current', i === current ? 'true' : 'false'); });
   };
   const restart = () => { clearInterval(timer); timer = setInterval(() => show(current + 1), 5500); };
-  document.getElementById('promo-prev')?.addEventListener('click', () => { show(current - 1); restart(); });
-  document.getElementById('promo-next')?.addEventListener('click', () => { show(current + 1); restart(); });
-  dots.forEach((dot, i) => dot.addEventListener('click', () => { show(i); restart(); }));
+  // Ketuk/klik area foto banner untuk berpindah ke banner berikutnya.
+  // Tombol CTA dan tautan di dalam banner tetap menjalankan fungsinya.
+  track.addEventListener('click', event => {
+    if (event.target.closest('a, button')) return;
+    show(current + 1);
+    restart();
+  });
   const mitraPopup = document.getElementById('mitra-signup-overlay');
   const bukaPopupMitra = () => {
     if (!mitraPopup) return;
