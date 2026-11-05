@@ -2928,3 +2928,45 @@ body { background: #f8f5f1; color: #332e2a; }
   .detail-action-caption span { font-size: 8px; }
   .detail-action-inner .btn-add-to-cart-modern { padding: 11px 9px; font-size: 11px; }
 }
+
+
+/* Warm & elegant category navigation accent */
+.category-scroll {
+  position: relative;
+  isolation: isolate;
+  padding-bottom: 17px;
+}
+.category-scroll::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 16px;
+  right: 16px;
+  bottom: 8px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    rgba(233,104,69,0) 0%,
+    rgba(233,104,69,.18) 16%,
+    rgba(218,169,139,.48) 50%,
+    rgba(233,104,69,.18) 84%,
+    rgba(233,104,69,0) 100%);
+}
+.category-tab {
+  position: relative;
+  z-index: 1;
+  transition: background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+.category-tab:not(.active):hover {
+  border-color: #e9c7b7;
+  background: linear-gradient(180deg, #fff 0%, #fff8f3 100%);
+  box-shadow: 0 3px 10px rgba(116,75,52,.08);
+}
+.category-tab.active {
+  background: linear-gradient(135deg, #ed805d 0%, #df6241 58%, #c95134 100%);
+  border-color: #df6241;
+  box-shadow: 0 4px 12px rgba(201,81,52,.2), inset 0 1px 0 rgba(255,255,255,.22);
+}
+@media (prefers-reduced-motion: reduce) {
+  .category-tab { transition: none; }
+}
