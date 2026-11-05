@@ -2522,3 +2522,95 @@ body { background: #f8f5f1; color: #332e2a; }
   padding: 0 !important;
   mix-blend-mode: normal;
 }
+
+
+/* PROMO BANNER — full-bleed photography */
+.promo-carousel {
+  margin: 14px 16px 18px;
+  border: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #2b211c;
+}
+.promo-slide {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(210px, 58vw, 340px);
+  padding: 0;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: #2b211c;
+}
+.promo-slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(90deg, rgba(20,16,13,.76) 0%, rgba(20,16,13,.42) 48%, rgba(20,16,13,.04) 100%),
+              linear-gradient(0deg, rgba(20,16,13,.30), transparent 55%);
+}
+.promo-slide img {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: center;
+  align-self: auto;
+  mix-blend-mode: normal;
+}
+.promo-copy {
+  flex: 0 1 620px;
+  min-width: 0;
+  padding: clamp(20px, 5vw, 38px);
+  color: #fff;
+  z-index: 1;
+}
+.promo-kicker { color: #ffd1b8; }
+.promo-copy h2 {
+  max-width: 520px;
+  color: #fff;
+  font-size: clamp(21px, 5vw, 36px);
+  line-height: 1.12;
+  text-shadow: 0 2px 14px rgba(0,0,0,.18);
+}
+.promo-copy p {
+  max-width: 390px;
+  color: rgba(255,255,255,.9);
+  font-size: clamp(11px, 2.2vw, 14px);
+}
+.promo-cta {
+  background: #f45b20;
+  box-shadow: 0 5px 16px rgba(0,0,0,.18);
+}
+.promo-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 36px;
+  z-index: 2;
+  padding: 0 14px 8px;
+  justify-content: flex-end;
+  gap: 8px;
+  background: transparent;
+}
+.promo-arrow { background: rgba(255,255,255,.92); }
+.promo-dots button { background: rgba(255,255,255,.62); }
+.promo-dots button.active { background: #fff; }
+@media (min-width: 600px) {
+  .promo-carousel { max-width: 1120px; margin: 20px auto 26px; }
+  .promo-slide { min-height: clamp(280px, 32vw, 390px); padding: 0; }
+  .promo-slide img { width: 100%; max-height: none; }
+  .promo-copy { padding: 42px; }
+}
+@media (max-width: 360px) {
+  .promo-carousel { margin-left: 10px; margin-right: 10px; }
+  .promo-slide { min-height: 205px; padding: 0; }
+  .promo-copy { padding: 18px 16px 28px; }
+}
