@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loji Express — Belanja Kebutuhan Harian</title>
     <meta name="description" content="Belanja sembako, jajanan lokal, frozen food, dan kebutuhan harian di Loji Express.">
-    <meta name="theme-color" content="#f4511e">
+    <meta name="theme-color" content="#ffffff">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" href="icon-192.png" type="image/png">
     <link rel="apple-touch-icon" href="icon-192.png">
@@ -43,27 +43,6 @@
         </div>
     </div>
 
-    <!-- BANNER KETERANGAN APLIKASI -->
-    <div class="about-app-banner">
-        <div class="about-card">
-            <div class="about-icon-box">
-                <span class="material-icons-round">storefront</span>
-            </div>
-            <div class="about-details">
-                <h2>Loji Express</h2>
-                <p>Belanja sembako, jajanan lokal, frozen food hingga kebutuhan harian jadi lebih mudah, cepat, dan diantar langsung ke depan pintu rumah Anda.</p>
-                <div class="about-badges" id="about-badges">
-                    <div class="badge-item">
-                        <span class="material-icons-round" style="color: #ff6b00;">bolt</span> Kilat
-                    </div>
-                    <div class="badge-item">
-                        <span class="material-icons-round" style="color: #22c55e;">verified</span> Terpercaya
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- CAROUSEL PROMOSI LOJI EXPRESS -->
     <section class="promo-carousel" aria-label="Informasi dan promosi Loji Express">
       <div class="promo-track" id="promo-track">
@@ -92,11 +71,19 @@
         <button class="category-tab active" onclick="filterKategori('Semua', event)">Semua</button>
     </div>
 
-    <div class="container">
+    <main class="container catalog-container">
+        <div class="catalog-heading">
+            <div>
+                <span class="catalog-eyebrow">PILIHAN UNTUK KAMU</span>
+                <h2>Temukan kebutuhanmu</h2>
+                <p>Produk pilihan dengan pemesanan yang praktis.</p>
+            </div>
+            <span class="catalog-heading-icon material-icons-round" aria-hidden="true">storefront</span>
+        </div>
         <div class="grid-layout" id="konten-produk">
             <p style="text-align: center; grid-column: span 2; color: var(--text-gray); font-size: 13px;">Memuat produk...</p>
         </div>
-    </div>
+    </main>
 
     <nav class="dock-nav">
         <a href="index.html" class="dock-link active">
