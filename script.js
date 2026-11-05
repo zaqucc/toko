@@ -283,7 +283,7 @@ function toggleSearchModal() {
         const isOpen = modal.style.display === 'block';
         modal.style.display = isOpen ? 'none' : 'block';
         if (dockNav) {
-            dockNav.style.transform = isOpen ? 'translateY(0)' : 'translateY(150px)';
+            dockNav.style.transform = isOpen ? 'translateX(-50%)' : 'translate(-50%, 150px)';
             dockNav.style.opacity = isOpen ? '1' : '0';
         }
         if (!isOpen) {
