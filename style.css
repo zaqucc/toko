@@ -1448,3 +1448,242 @@ body:has(.app-header-back) .container { max-width:720px; padding:18px 16px 120px
   html { scroll-behavior:auto; }
   .premium-card { transition:none; }
 }
+
+
+/* =====================================================
+   LOJI EXPRESS — ALIGNMENT & RESPONSIVE POLISH
+   Konsistensi ukuran, jarak, dan posisi pada semua layar.
+   ===================================================== */
+.app-header,
+.promo-carousel,
+.category-scroll,
+.catalog-container {
+  width: 100%;
+}
+.app-header { min-height: 68px; }
+.brand-app-logo { display:block; width:100%; height:100%; object-fit:contain; }
+.promo-slide {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:clamp(176px,22vw,236px);
+  box-sizing:border-box;
+}
+.promo-copy {
+  flex:1 1 58%;
+  min-width:0;
+  max-width:520px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+}
+.promo-copy h2,
+.promo-copy p { overflow-wrap:anywhere; }
+.promo-slide img {
+  display:block;
+  flex:0 1 36%;
+  width:36%;
+  height:auto;
+  max-width:250px;
+  max-height:205px;
+  object-fit:contain;
+  object-position:center;
+  margin:0 auto;
+}
+.promo-controls {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  padding:0 0 8px;
+}
+.promo-dots {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+}
+.category-scroll {
+  box-sizing:border-box;
+  scrollbar-width:none;
+  overscroll-behavior-x:contain;
+}
+.category-scroll::-webkit-scrollbar { display:none; }
+.category-tab {
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:38px;
+  line-height:1;
+}
+.catalog-container { box-sizing:border-box; }
+.catalog-heading {
+  min-height:58px;
+  align-items:center;
+}
+.catalog-heading > div { min-width:0; }
+.grid-layout {
+  align-items:stretch;
+  grid-auto-rows:1fr;
+}
+.premium-card {
+  min-width:0;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-self:stretch;
+}
+.img-container {
+  display:block;
+  flex:0 0 auto;
+  aspect-ratio:1 / 1;
+  padding:0;
+}
+.premium-img {
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+.info-container {
+  flex:1 1 auto;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:10px;
+}
+.item-name {
+  min-height:3em;
+  max-height:3em;
+  height:auto;
+  margin:0;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+}
+.price-action-row {
+  min-height:34px;
+  margin-top:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.item-price {
+  min-width:0;
+  line-height:1.25;
+  overflow-wrap:anywhere;
+}
+.btn-round-add {
+  flex:0 0 34px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+}
+.tag-stok {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:22px;
+  line-height:1;
+}
+.search-box-container {
+  min-height:48px;
+}
+.search-box-container input { min-width:0; }
+.dock-nav {
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  gap:6px;
+}
+.dock-link {
+  flex:1 1 0;
+  min-width:0;
+  min-height:46px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+.dock-link .material-icons-round { line-height:1; }
+.app-header-back {
+  position:sticky;
+  top:0;
+  z-index:40;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.app-header-back h1 {
+  flex:1;
+  min-width:0;
+  text-align:left;
+}
+.cart-item {
+  display:flex;
+  gap:12px;
+  min-width:0;
+}
+.cart-item > div { min-width:0; }
+.form-card,
+.detail-content-card,
+.detail-main-card-box { box-sizing:border-box; }
+.form-control { width:100%; }
+.action-bar,
+.detail-action-bar {
+  padding-left:max(16px,env(safe-area-inset-left));
+  padding-right:max(16px,env(safe-area-inset-right));
+  padding-bottom:calc(10px + env(safe-area-inset-bottom));
+  box-sizing:border-box;
+}
+.btn-submit-order,
+.btn-add-to-cart-modern { width:100%; }
+@media (min-width:600px) {
+  .promo-slide { padding:28px clamp(28px,5vw,52px); }
+  .promo-copy { flex-basis:60%; }
+  .promo-slide img { flex-basis:34%; width:34%; max-width:270px; }
+  .grid-layout { grid-auto-rows:1fr; }
+  .premium-card { min-height:100%; }
+  .info-container { min-height:112px; padding:13px; }
+  .item-name { min-height:3em; }
+}
+@media (min-width:900px) {
+  .app-header { padding-left:max(24px,calc((100% - 1120px)/2)); padding-right:max(24px,calc((100% - 1120px)/2)); }
+  .promo-carousel { width:calc(100% - 48px); }
+  .category-scroll { justify-content:flex-start; }
+  .catalog-container { padding-left:24px; padding-right:24px; }
+}
+@media (max-width:599px) {
+  .promo-slide { gap:8px; padding:15px 13px 12px 16px; }
+  .promo-copy { flex-basis:57%; }
+  .promo-copy h2 { max-width:100%; }
+  .promo-copy p { max-width:100%; }
+  .promo-slide img { flex-basis:39%; width:39%; max-height:140px; }
+  .promo-controls { padding-bottom:7px; }
+  .grid-layout { grid-auto-rows:1fr; }
+}
+@media (max-width:360px) {
+  .brand-wrapper { gap:8px; }
+  .brand-logo-box { width:38px; height:38px; flex-basis:38px; }
+  .brand-text h1 { font-size:15px; }
+  .brand-text p { font-size:9px; }
+  .promo-slide { padding-left:12px; padding-right:9px; }
+  .promo-copy h2 { font-size:16px; }
+  .promo-copy p { font-size:9px; line-height:1.5; }
+  .promo-cta { min-height:34px; padding:8px 9px; }
+  .catalog-container { padding-left:10px; padding-right:10px; }
+  .grid-layout { gap:8px; }
+  .info-container { padding:8px; }
+  .item-price { font-size:11px; }
+  .btn-round-add { flex-basis:30px; width:30px; height:30px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .dock-nav,.promo-slide,.premium-card { transition:none !important; }
+}
