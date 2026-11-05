@@ -15,22 +15,28 @@
 </head>
 <body>
 
-    <!-- HEADER UTAMA -->
-    <div class="app-header">
-        <div class="brand-wrapper">
-            <div class="brand-logo-box">
-                <img src="icon.svg" alt="Logo Loji Express" class="brand-app-logo">
-            </div>
-            <div class="brand-text">
-                <h1>Loji Express</h1>
-                <p><span class="material-icons-round location-icon">location_on</span> Tegalwaru & Pangkalan</p>
+    <!-- HEADER MARKETPLACE -->
+    <header class="market-header">
+        <div class="market-header-top">
+            <a class="market-brand" href="index.html" aria-label="Loji Express beranda">
+                <img src="icon.svg" alt="" class="market-brand-logo">
+                <span>Loji <strong>Express</strong></span>
+            </a>
+            <div class="market-delivery">
+                <span class="material-icons-round">location_on</span>
+                <span><small>Kirim ke</small><strong>Tegalwaru & Pangkalan</strong></span>
             </div>
         </div>
-        <!-- TOMBOL PENCARIAN DI ATAS -->
-        <button class="search-trigger-btn" onclick="toggleSearchModal()">
-            <span class="material-icons-round" style="font-size: 24px;">search</span>
-        </button>
-    </div>
+        <div class="market-search-row">
+            <button class="search-trigger-btn market-search-trigger" type="button" onclick="toggleSearchModal()" aria-label="Cari produk">
+                <span class="material-icons-round">search</span>
+                <span>Cari produk, makanan, dan kebutuhan harian...</span>
+            </button>
+            <a class="market-cart-shortcut" href="order.html" aria-label="Buka keranjang">
+                <span class="material-icons-round">shopping_cart</span>
+            </a>
+        </div>
+    </header>
 
     <!-- POP-UP MODAL PENCARIAN RESPONSIF -->
     <div class="search-modal" id="search-modal">
@@ -72,15 +78,14 @@
     </div>
 
     <main class="container catalog-container">
-        <div class="catalog-heading">
+        <section class="marketplace-catalog-heading">
             <div>
-                <span class="catalog-eyebrow">PILIHAN UNTUK KAMU</span>
-                <h2>Temukan kebutuhanmu</h2>
-                <p>Produk pilihan dengan pemesanan yang praktis.</p>
+                <span class="marketplace-eyebrow">PILIHAN HARI INI</span>
+                <h2>Rekomendasi untuk kamu</h2>
             </div>
-            <span class="catalog-heading-icon material-icons-round" aria-hidden="true">storefront</span>
-        </div>
-        <div class="grid-layout" id="konten-produk">
+            <span class="marketplace-product-count" id="jumlah-produk">Memuat produk...</span>
+        </section>
+        <div class="grid-layout marketplace-product-grid" id="konten-produk">
             <p style="text-align: center; grid-column: span 2; color: var(--text-gray); font-size: 13px;">Memuat produk...</p>
         </div>
     </main>
