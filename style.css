@@ -3680,3 +3680,54 @@ body.cart-page .app-header-back h1 {
 .promo-carousel .promo-track { cursor: pointer; touch-action: pan-y; }
 .promo-carousel .promo-slide { cursor: pointer; }
 .promo-carousel .promo-cta { cursor: pointer; }
+
+
+/* NAVIGASI BANNER — dua tombol presisi di kanan, tanpa mengubah dimensi banner */
+.promo-carousel .promo-controls {
+  position:absolute !important;
+  right:14px !important;
+  bottom:12px !important;
+  left:auto !important;
+  top:auto !important;
+  z-index:5 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:7px !important;
+  width:auto !important;
+  height:auto !important;
+  padding:0 !important;
+  margin:0 !important;
+  background:transparent !important;
+  pointer-events:auto !important;
+}
+.promo-carousel .promo-arrow {
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:30px !important;
+  height:30px !important;
+  min-width:30px !important;
+  min-height:30px !important;
+  flex:0 0 30px !important;
+  padding:0 !important;
+  margin:0 !important;
+  border:1px solid rgba(255,255,255,.72) !important;
+  border-radius:50% !important;
+  background:rgba(255,255,255,.94) !important;
+  color:#F45B20 !important;
+  box-shadow:0 2px 8px rgba(0,0,0,.16) !important;
+  cursor:pointer !important;
+  -webkit-tap-highlight-color:transparent;
+}
+.promo-carousel .promo-arrow .material-icons-round {
+  font-size:21px !important;
+  line-height:1 !important;
+}
+.promo-carousel .promo-arrow:active { transform:scale(.94); }
+.promo-carousel .promo-track,
+.promo-carousel .promo-slide { cursor:default !important; }
+@media(max-width:360px) {
+  .promo-carousel .promo-controls { right:10px !important; bottom:10px !important; gap:6px !important; }
+  .promo-carousel .promo-arrow { width:28px !important; height:28px !important; min-width:28px !important; min-height:28px !important; flex-basis:28px !important; }
+}
